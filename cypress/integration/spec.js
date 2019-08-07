@@ -77,5 +77,58 @@ context('Cypress example', () => {
 
       cy.runExample(html, test)
     })
+
+    context('searching for cell', () => {
+      const html = source`
+        <table>
+          <tr><td>A1</td><td>A2</td><td><button onclick="alert('A3')">A3</button></td></tr>
+          <tr><td>B1</td><td>B2</td><td><button onclick="alert('B3')">B3</button></td></tr>
+          <tr><td>C1</td><td>C2</td><td><button onclick="alert('C3')">C3</button></td></tr>
+        </table>
+        `
+
+      it('finds row with a cell that has B2 text and checks last cell', () => {
+        const test = source`
+          cy.get('table')
+            .find('tr:contains("B2")')
+            .find('td') // finds 3 TD elements in this row
+            .eq(2) // 3rd TD element
+            .find('button')
+            .should('have.attr', 'onclick')
+        `
+
+        cy.runExample(html, test)
+      })
+
+      it('finds row using $.each', () => {
+        const test = source`
+          cy.get('table tr')
+            .should('have.length', 3)
+            .then($trs => {
+              $trs.each((k, tr) => {
+                if (Cypress.$(tr).text().includes('B2')) {
+                  // yield this "TR" element and stop ".each" iteration
+                  cy.wrap(tr)
+                  return false
+                }
+              })
+            })
+            .contains('button', 'B3')
+        `
+
+        cy.runExample(html, test)
+      })
+
+      it('finds row using cy.contains', () => {
+        const test = source`
+          cy.get('table tr')
+            .should('have.length', 3)
+            .contains('td', 'B2')
+            .parent('tr')
+            .contains('button', 'B3')
+        `
+        cy.runExample(html, test)
+      })
+    })
   })
 })
