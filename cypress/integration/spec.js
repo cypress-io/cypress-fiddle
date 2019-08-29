@@ -43,6 +43,10 @@ Cypress.Commands.add('runExample', (html, test) => {
   document.write(appHtml)
   document.close()
 
+  // make sure when "eval" runs, the "window" in the test code
+  // points at the application's iframe window object
+  const window = cy.state('window')
+
   const noLog = { log: false }
   cy.get('#live', noLog).within(noLog, () => {
     eval(test)
@@ -64,8 +68,9 @@ context('Cypress example', () => {
     })
   })
 
-  it('detects when property gets added to an object', () => {
-    const test = source`
+  describe('cy.wrap()', () => {
+    it('detects when property gets added to an object', () => {
+      const test = source`
       // an object without a property
       const o = {}
       // property "id" gets added after a delay
@@ -75,11 +80,11 @@ context('Cypress example', () => {
       // detects when property "id" get added to the object "o"
       cy.wrap(o).should('have.property', 'id')
     `
-    cy.runExample(null, test)
-  })
+      cy.runExample(null, test)
+    })
 
-  it('detects when property has expected value', () => {
-    const test = source`
+    it('detects when property has expected value', () => {
+      const test = source`
       // an object with an id
       const o = {
         id: 'initial'
@@ -91,7 +96,24 @@ context('Cypress example', () => {
       // detects property "o.id" has specific value
       cy.wrap(o).should('have.property', 'id', 'abc123')
     `
-    cy.runExample(null, test)
+      cy.runExample(null, test)
+    })
+
+    it('detects when property gets added and deleted from window object', () => {
+      const test = source`
+      // asynchronously add and delete a property
+      setTimeout(() => {
+        window.customProp = 'here'
+      }, 1000)
+      setTimeout(() => {
+        delete window.customProp
+      }, 2000)
+
+      cy.window().should('have.property', 'customProp')
+      cy.window().should('not.have.property', 'customProp')
+    `
+      cy.runExample(null, test)
+    })
   })
 
   describe('.then()', () => {
