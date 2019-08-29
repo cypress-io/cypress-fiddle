@@ -5,6 +5,22 @@
 import { source } from 'common-tags'
 
 Cypress.Commands.add('runExample', (html, test) => {
+  const testTitle = cy.state('runnable').title
+
+  const htmlSection = html
+    ? `<h2>HTML</h2>
+    <div id="html">
+    <pre><code class="html">${Cypress._.escape(html)}</code></pre>
+    </div>
+
+    <h2>Live HTML</h2>
+    <div id="live">
+    ${html}
+    </div>
+    `
+    : `<div id="live"></div>
+    `
+
   const appHtml = `
     <head>
       <meta charset="UTF-8">
@@ -15,19 +31,12 @@ Cypress.Commands.add('runExample', (html, test) => {
       <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
-      <h1>Test code</h1>
+      <h1>${testTitle}</h1>
+      <h2>Test code</h2>
 
       <pre><code class="javascript">${test}</code></pre>
 
-      <h1>HTML</h1>
-      <div id="html">
-      <pre><code class="html">${Cypress._.escape(html)}</code></pre>
-      </div>
-
-      <h1>Live HTML</h1>
-      <div id="live">
-      ${html}
-      </div>
+      ${htmlSection}
     </body>
   `
   const document = cy.state('document')
@@ -53,6 +62,36 @@ context('Cypress example', () => {
 
       cy.runExample(html, test)
     })
+  })
+
+  it('detects when property gets added to an object', () => {
+    const test = source`
+      // an object without a property
+      const o = {}
+      // property "id" gets added after a delay
+      setTimeout(() => {
+        o.id = 'abc123'
+      }, 500)
+      // detects when property "id" get added to the object "o"
+      cy.wrap(o).should('have.property', 'id')
+    `
+    cy.runExample(null, test)
+  })
+
+  it('detects when property has expected value', () => {
+    const test = source`
+      // an object with an id
+      const o = {
+        id: 'initial'
+      }
+      // set "o.id" after delay
+      setTimeout(() => {
+        o.id = 'abc123'
+      }, 500)
+      // detects property "o.id" has specific value
+      cy.wrap(o).should('have.property', 'id', 'abc123')
+    `
+    cy.runExample(null, test)
   })
 
   describe('.then()', () => {
