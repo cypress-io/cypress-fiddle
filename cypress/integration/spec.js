@@ -192,4 +192,34 @@ context('Cypress example', () => {
       })
     })
   })
+
+  describe('.as()', () => {
+    it('saves values in the test context', () => {
+      const html = source`
+        <input id="first" value="101" />
+        <input id="second" value="101" />
+        <input id="third" value="101" />
+      `
+
+      const test = source`
+        // save value from the first input element
+        // as test context property "first"
+        cy.get('#first').invoke('val').as('first')
+        cy.get('#second').invoke('val').as('second')
+        cy.get('#third').invoke('val').as('third')
+
+        // now compare the saved values
+        // note how we use ".then" to make sure the callback
+        // function runs AFTER "cy.get" calls
+        cy.then(function () {
+          // use "function () {...}" to make sure "this" points
+          // at the test context
+          expect(this.first, 'first equals second').to.equal(this.second)
+          expect(this.first, 'first equals third').to.equal(this.third)
+        })
+      `
+
+      cy.runExample(html, test)
+    })
+  })
 })
