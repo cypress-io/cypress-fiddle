@@ -1,6 +1,9 @@
-/// <reference types="cypress" />
+/// <reference path="./index.d.ts" />
+
 Cypress.Commands.add('runExample', ({ name, description, html, test }) => {
   const testTitle = name || cy.state('runnable').title
+
+  expect(test, 'missing test source').to.be.a('string')
 
   const htmlSection = html
     ? `<h2>HTML</h2>

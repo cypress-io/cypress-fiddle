@@ -1,6 +1,4 @@
-// enables intelligent code completion for Cypress commands
-// https://on.cypress.io/intelligent-code-completion
-/// <reference types="Cypress" />
+/// <reference path="../support/index.d.ts" />
 
 import { source } from 'common-tags'
 
@@ -15,7 +13,7 @@ context('Cypress example', () => {
         cy.get('#my-element')
       `
 
-      cy.runExample(html, test)
+      cy.runExample({ html, test })
     })
   })
 
@@ -31,7 +29,7 @@ context('Cypress example', () => {
       // detects when property "id" get added to the object "o"
       cy.wrap(o).should('have.property', 'id')
     `
-      cy.runExample(null, test)
+      cy.runExample({ test })
     })
 
     it('detects when property has expected value', () => {
@@ -47,7 +45,7 @@ context('Cypress example', () => {
       // detects property "o.id" has specific value
       cy.wrap(o).should('have.property', 'id', 'abc123')
     `
-      cy.runExample(null, test)
+      cy.runExample({ test })
     })
 
     it('detects when property gets added and deleted from window object', () => {
@@ -63,7 +61,7 @@ context('Cypress example', () => {
       cy.window().should('have.property', 'customProp')
       cy.window().should('not.have.property', 'customProp')
     `
-      cy.runExample(null, test)
+      cy.runExample({ test })
     })
   })
 
@@ -87,7 +85,7 @@ context('Cypress example', () => {
           })
       `
 
-      cy.runExample(html, test)
+      cy.runExample({ html, test })
     })
 
     context('searching for cell', () => {
@@ -109,7 +107,7 @@ context('Cypress example', () => {
             .should('have.attr', 'onclick')
         `
 
-        cy.runExample(html, test)
+        cy.runExample({ html, test })
       })
 
       it('finds row using $.each', () => {
@@ -128,7 +126,7 @@ context('Cypress example', () => {
             .contains('button', 'B3')
         `
 
-        cy.runExample(html, test)
+        cy.runExample({ html, test })
       })
 
       it('finds row using cy.contains', () => {
@@ -139,7 +137,7 @@ context('Cypress example', () => {
             .parent('tr')
             .contains('button', 'B3')
         `
-        cy.runExample(html, test)
+        cy.runExample({ html, test })
       })
     })
   })
@@ -170,7 +168,7 @@ context('Cypress example', () => {
         })
       `
 
-      cy.runExample(html, test)
+      cy.runExample({ html, test })
     })
   })
 })
