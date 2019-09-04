@@ -1,6 +1,10 @@
 /// <reference path="../support/index.d.ts" />
 
 import { source } from 'common-tags'
+import { testExamples } from '../support'
+import wrapExamples from './wrap-examples'
+
+testExamples(wrapExamples)
 
 context('Cypress example', () => {
   describe('.get()', () => {
@@ -14,54 +18,6 @@ context('Cypress example', () => {
       `
 
       cy.runExample({ html, test })
-    })
-  })
-
-  describe('cy.wrap()', () => {
-    it('detects when property gets added to an object', () => {
-      const test = source`
-      // an object without a property
-      const o = {}
-      // property "id" gets added after a delay
-      setTimeout(() => {
-        o.id = 'abc123'
-      }, 500)
-      // detects when property "id" get added to the object "o"
-      cy.wrap(o).should('have.property', 'id')
-    `
-      cy.runExample({ test })
-    })
-
-    it('detects when property has expected value', () => {
-      const test = source`
-      // an object with an id
-      const o = {
-        id: 'initial'
-      }
-      // set "o.id" after delay
-      setTimeout(() => {
-        o.id = 'abc123'
-      }, 500)
-      // detects property "o.id" has specific value
-      cy.wrap(o).should('have.property', 'id', 'abc123')
-    `
-      cy.runExample({ test })
-    })
-
-    it('detects when property gets added and deleted from window object', () => {
-      const test = source`
-      // asynchronously add and delete a property
-      setTimeout(() => {
-        window.customProp = 'here'
-      }, 1000)
-      setTimeout(() => {
-        delete window.customProp
-      }, 2000)
-
-      cy.window().should('have.property', 'customProp')
-      cy.window().should('not.have.property', 'customProp')
-    `
-      cy.runExample({ test })
     })
   })
 
