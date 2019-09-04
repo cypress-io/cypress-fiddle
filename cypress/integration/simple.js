@@ -5,6 +5,9 @@ import { source } from 'common-tags'
  */
 export default {
   name: 'simple test',
+  description: `
+    This is the simplest test possible. Just finds an element by ID.
+  `,
   html: source`
     <div id="my-element">Hi there</div>
   `,

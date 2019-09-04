@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-Cypress.Commands.add('runExample', (html, test) => {
-  const testTitle = cy.state('runnable').title
+Cypress.Commands.add('runExample', ({ name, description, html, test }) => {
+  const testTitle = name || cy.state('runnable').title
 
   const htmlSection = html
     ? `<h2>HTML</h2>
@@ -16,6 +16,9 @@ Cypress.Commands.add('runExample', (html, test) => {
     : `<div id="live"></div>
     `
 
+  // TODO: allow simple markup, properly convert it
+  const descriptionHtml = description || ''
+
   const appHtml = `
     <head>
       <meta charset="UTF-8">
@@ -27,6 +30,7 @@ Cypress.Commands.add('runExample', (html, test) => {
     </head>
     <body>
       <h1>${testTitle}</h1>
+      <div>${descriptionHtml}</div>
       <h2>Test code</h2>
 
       <pre><code class="javascript">${test}</code></pre>
@@ -59,7 +63,7 @@ const isTestObject = o => o.test
 export const testExamples = maybeTest => {
   if (isTestObject(maybeTest)) {
     it(maybeTest.name, () => {
-      cy.runExample(maybeTest.html, maybeTest.test)
+      cy.runExample(maybeTest)
     })
   } else {
     forEach(maybeTest, (value, name) => {
@@ -68,7 +72,7 @@ export const testExamples = maybeTest => {
       if (isTestObject(value)) {
         console.log('%s is a test', name)
         it(name, () => {
-          cy.runExample(value.html, value.test)
+          cy.runExample(value)
         })
       } else {
         describe(name, () => {
