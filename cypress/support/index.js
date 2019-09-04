@@ -3,7 +3,7 @@
 Cypress.Commands.add('runExample', ({ name, description, html, test }) => {
   const testTitle = name || cy.state('runnable').title
 
-  expect(test, 'missing test source').to.be.a('string')
+  expect(test, 'must have test source').to.be.a('string')
 
   const htmlSection = html
     ? `<h2>HTML</h2>
@@ -76,6 +76,13 @@ export const testExamples = maybeTest => {
         console.log('%s is a test', name)
         it(name, () => {
           cy.runExample(value)
+        })
+      } else if (Array.isArray(value)) {
+        console.log('list of tests')
+        value.forEach(test => {
+          it(test.name, () => {
+            cy.runExample(test)
+          })
         })
       } else {
         describe(name, () => {
