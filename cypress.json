@@ -1,3 +1,6 @@
 {
-  "ignoreTestFiles": "examples.js"
+  "ignoreTestFiles": [
+    "examples.js",
+    "simple.js"
+  ]
 }

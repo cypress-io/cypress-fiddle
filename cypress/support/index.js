@@ -47,3 +47,32 @@ Cypress.Commands.add('runExample', (html, test) => {
     eval(test)
   })
 })
+
+const { forEach } = Cypress._
+
+const isTestObject = o => o.test
+
+/**
+ * Processes a tree of test definitions, each with HTML and JS
+ * and makes each into a live test. See examples in "integration" folder.
+ */
+export const testExamples = maybeTest => {
+  if (isTestObject(maybeTest)) {
+    it(maybeTest.name, () => {
+      cy.runExample(maybeTest.html, maybeTest.test)
+    })
+  } else {
+    forEach(maybeTest, (value, name) => {
+      console.log({ name, value })
+
+      if (isTestObject(value)) {
+        console.log('%s is a test', name)
+        it(name, () => {
+          cy.runExample(value.html, value.test)
+        })
+      } else {
+        testExamples(value)
+      }
+    })
+  }
+}
