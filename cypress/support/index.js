@@ -71,7 +71,9 @@ export const testExamples = maybeTest => {
           cy.runExample(value.html, value.test)
         })
       } else {
-        testExamples(value)
+        describe(name, () => {
+          testExamples(value)
+        })
       }
     })
   }
