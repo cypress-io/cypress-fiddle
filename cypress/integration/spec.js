@@ -1,7 +1,7 @@
-/// <reference path="../support/index.d.ts" />
+/// <reference types="../.." />
 
 import { source } from 'common-tags'
-import { testExamples } from '../support'
+import { testExamples } from '../..'
 import wrapExamples from './wrap-examples'
 
 testExamples(wrapExamples)
