@@ -25,7 +25,7 @@ Cypress.Commands.add('runExample', options => {
     `
 
   // TODO: allow simple markup, properly convert it
-  const descriptionHtml = nmd(description) || ''
+  const descriptionHtml = nmd(description || '')
 
   const appHtml = `
     <head>
