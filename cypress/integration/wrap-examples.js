@@ -10,7 +10,7 @@ const smallTests = [
   },
   {
     name: 'second test',
-    only: true,
+    only: false,
     description: '`cy.wrap() + cy.then()` example',
     test: `
         cy.wrap()
