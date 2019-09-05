@@ -1,11 +1,15 @@
 # cypress-fiddle [![renovate-app badge][renovate-badge]][renovate-app] [![CircleCI](https://circleci.com/gh/cypress-io/cypress-fiddle/tree/master.svg?style=svg)](https://circleci.com/gh/cypress-io/cypress-fiddle/tree/master)
-> Generate Cypress tests from HTML and JS
+> Generate Cypress tests live from HTML and JS
 
-The helper command and utility function in this package allows you to instantly experiment with Cypress code by creating a tiny live HTML fiddle and run E2E test against it.
+Instantly experiment with Cypress tests by creating a tiny live HTML fiddle and running E2E tests against it.
+
+![runExample test](images/runExample.png)
 
 ## Install
 
-After installing Cypress with `npm i -D cypress` add this module
+Cypress is a peer dependency of this module. Install the current version of Cypress by running `npm i -D cypress`.
+
+After installing Cypress, install this module via npm:
 
 ```shell
 npm i -D @cypress/fiddle
@@ -22,14 +26,16 @@ import '@cypress/fiddle'
 
 ### Create a single test
 
-You can take an object with HTML and test commands and run it. For example in the `cypress/integration/spec.js` file
+You can take an object with an `html` property containing HTML and a `test` property containing Cypress commands and run the tests.
+
+For example in the `cypress/integration/spec.js` file:
 
 ```js
 // loads TypeScript definition for Cypress
 // and "cy.runExample" custom command
 /// <reference types="@cypress/fiddle" />
 
-const test = {
+const helloTest = {
   html: `
     <div>Hello</div>
   `,
@@ -39,7 +45,7 @@ const test = {
 }
 
 it('tests hello', () => {
-  cy.runExample(test)
+  cy.runExample(helloTest)
 })
 ```
 
@@ -49,15 +55,15 @@ Which produces
 
 ### Parameters
 
-The test object can have multiple properties, see [src/index.d.ts](src/index.d.ts)
+The test object can have multiple properties, see [src/index.d.ts](src/index.d.ts) for all.
 
 - `test` JavaScript with Cypress commands, required
 
 The rest of the properties are optional
 
 - `html` to mount as DOM nodes before the test begins
-- `name` is the name to display at the top of the page, otherwise the test title will be used
-- `description` gives extra test description under the name, supports Markdown via [nmd](https://github.com/Holixus/nano-markdown)
+- `name` the name to display at the top of the page, otherwise the test title will be used
+- `description` extra test description under the name, supports Markdown via [nmd](https://github.com/Holixus/nano-markdown)
 
 The next properties are NOT used by `cy.runExample` but are used by the `testExamples` function from this package.
 
@@ -66,23 +72,24 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 
 ### Create multiple tests
 
-Instead of writing `cy.runExample` one by one, you can collect all test definitions into a list or a nested object of suites and create tests automatically.
+Instead of writing the `cy.runExample()` command one by one, you can collect all test definitions into a list or a nested object of suites and create tests automatically.
 
-For example, here is a list of tests created from an array
+For example, here is a list of tests created from an array:
 
 ```js
 import { testExamples } from '@cypress/fiddle'
+
 const tests = [
   {
     name: 'first test',
-    description: 'cy.wrap example',
+    description: 'cy.wrap() example',
     test: `
       cy.wrap('hello').should('have.length', 5)
     `
   },
   {
     name: 'second test',
-    description: 'cy.wrap + cy.then example',
+    description: 'cy.wrap() + .then() example',
     test: `
         cy.wrap()
           .then(() => {
@@ -96,7 +103,7 @@ testExamples(tests)
 
 ![List of tests](images/list.png)
 
-While working with tests, you can skip a test or make it exclusive. For example to skip the first test add `skip: true` property
+While working with tests, you can skip a test or make it exclusive. For example to skip the first test add a `skip: true` property.
 
 ```js
 {
@@ -107,7 +114,7 @@ While working with tests, you can skip a test or make it exclusive. For example 
 }
 ```
 
-Or run just this test using `only: true` property
+Or run just a single test by using the `only: true` property.
 
 ```js
 {
@@ -118,7 +125,7 @@ Or run just this test using `only: true` property
 }
 ```
 
-You can create suites by just having nested objects. Each object becomes either a suite or a test.
+You can create suites by having nested objects. Each object becomes either a suite or a test.
 
 ```js
 import { testExamples } from '@cypress/fiddle'
@@ -150,6 +157,7 @@ const suite = {
     }
   }
 }
+
 testExamples(suite)
 ```
 
