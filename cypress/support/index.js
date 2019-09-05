@@ -1,5 +1,7 @@
 /// <reference path="./index.d.ts" />
 
+import 'cypress-pipe'
+
 Cypress.Commands.add('runExample', ({ name, description, html, test }) => {
   const testTitle = name || cy.state('runnable').title
 

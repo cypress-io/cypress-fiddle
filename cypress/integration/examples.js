@@ -90,6 +90,59 @@ export default {
           cy.get('td').eq(4).contains('button', 'Edit').click()
         })
       `
+    },
+    'exact then inexact matches using jQuery and cypress-pipe': {
+      html: source`
+        <div id="example">
+          <div id="inexact">my item</div>
+          <div id="exact">item</div>
+        </div>
+      `,
+      test: source`
+        const exactThenInexact = (text) => $el => {
+          const r = new RegExp('^' + text + '$')
+          let found
+          $el.children().each(function (k, v) {
+            if (found) return
+            if (Cypress.$(v).text().match(r)) {
+              found = Cypress.$(v)
+            }
+          })
+
+          if (!found) {
+            // now try to find inexact match
+            $el.children().each(function (k, v) {
+              if (found) return
+              if (Cypress.$(v).text().includes(text)) {
+                found = Cypress.$(v)
+              }
+            })
+          }
+
+          return cy.wrap(found)
+        }
+        const containsExactThenInexactText = (text) =>
+          cy.get('div').pipe(exactThenInexact(text))
+
+        containsExactThenInexactText('item').should('have.attr', 'id', 'exact')
+        containsExactThenInexactText('my').should('have.attr', 'id', 'inexact')
+      `
+    },
+    'contains exact label match': {
+      html: source`
+        <div class="form-group">
+          <label for="client_default_rate_type">Default rate type</label>
+          <select name="client[default_rate_type]" id="client_default_rate_type"><option value="hourly">hourly</option><option selected="selected" value="weekly">weekly</option></select>
+        </div>
+        <div class="form-group">
+          <label for="client_default_rate">Default rate</label>
+          <input type="text" value="50.00" name="client[default_rate]" id="client_default_rate">
+        </div>
+      `,
+      test: source`
+        cy.contains('label', /^Default rate$/)
+          .should('have.attr', 'for', 'client_default_rate')
+      `
     }
   }
 }
