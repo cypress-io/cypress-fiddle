@@ -1,4 +1,4 @@
-
-See [cypress/integration/spec.js](cypress/integration/spec.js)
+# cypress-fiddle
+> Generate Cypress tests from HTML and JS
 
 ![Screenshot](images/screenshot.png)

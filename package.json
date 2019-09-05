@@ -1,20 +1,31 @@
 {
-  "name": "cypress-examples",
+  "name": "@cypress/fiddle",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generate Cypress tests from HTML and JS",
   "main": "index.js",
+  "files": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress run",
     "cy:open": "cypress open"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "cypress",
+    "cypress-example"
+  ],
+  "author": "Gleb Bahmutov <gleb@cypress.io>",
+  "license": "MIT",
   "devDependencies": {
     "common-tags": "1.8.0",
-    "cypress": "3.4.1"
-  },
-  "dependencies": {
+    "cypress": "3.4.1",
     "cypress-pipe": "1.5.0"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cypress-io/cypress-fiddle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cypress-io/cypress-fiddle/issues"
+  },
+  "homepage": "https://github.com/cypress-io/cypress-fiddle#readme"
 }
