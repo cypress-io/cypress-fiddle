@@ -2,7 +2,8 @@
 
 import 'cypress-pipe'
 
-Cypress.Commands.add('runExample', ({ name, description, html, test }) => {
+Cypress.Commands.add('runExample', options => {
+  const { name, description, html, test } = options
   const testTitle = name || cy.state('runnable').title
 
   expect(test, 'must have test source').to.be.a('string')
@@ -61,36 +62,49 @@ const { forEach } = Cypress._
 
 const isTestObject = o => o.test
 
+const createTest = (name, test) => {
+  name = name || test.name
+
+  it(name, () => {
+    cy.runExample(test)
+  })
+}
+
 /**
  * Processes a tree of test definitions, each with HTML and JS
  * and makes each into a live test. See examples in "integration" folder.
  */
 export const testExamples = maybeTest => {
   if (isTestObject(maybeTest)) {
-    it(maybeTest.name, () => {
-      cy.runExample(maybeTest)
-    })
-  } else {
-    forEach(maybeTest, (value, name) => {
-      console.log({ name, value })
-
-      if (isTestObject(value)) {
-        console.log('%s is a test', name)
-        it(name, () => {
-          cy.runExample(value)
-        })
-      } else if (Array.isArray(value)) {
-        console.log('list of tests')
-        value.forEach(test => {
-          it(test.name, () => {
-            cy.runExample(test)
-          })
-        })
-      } else {
-        describe(name, () => {
-          testExamples(value)
-        })
-      }
-    })
+    createTest(maybeTest.name, maybeTest)
+    return
   }
+
+  forEach(maybeTest, (value, name) => {
+    console.log({ name, value })
+
+    if (isTestObject(value)) {
+      console.log('%s is a test', name)
+
+      if (value.skip && value.only) {
+        throw new Error(`Test ${name} has `)
+      }
+
+      createTest(name, value)
+      return
+    }
+
+    if (Array.isArray(value)) {
+      console.log('list of tests')
+      value.forEach(test => {
+        createTest(test.name, test)
+      })
+      return
+    }
+
+    // final choice - create nested suite of tests
+    describe(name, () => {
+      testExamples(value)
+    })
+  })
 }
