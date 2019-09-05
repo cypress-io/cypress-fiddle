@@ -23,6 +23,15 @@ type JavaScript = string
  */
 interface RunExampleOptions {
   name?: string,
+
+  /**
+   * Optional description of the test. Supports Markdown via `nmd`
+   * To open links in new window , use `[text](+url)` format.
+   *
+   * @type {string}
+   * @memberof RunExampleOptions
+   * @see https://github.com/Holixus/nano-markdown
+   */
   description?: string,
   html?: HTML,
   test: JavaScript,

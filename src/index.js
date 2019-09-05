@@ -1,5 +1,7 @@
 /// <reference path="./index.d.ts" />
 
+const nmd = require('nano-markdown')
+
 Cypress.Commands.add('runExample', options => {
   const { name, description, html, test } = options
   const testTitle = name || cy.state('runnable').title
@@ -23,7 +25,7 @@ Cypress.Commands.add('runExample', options => {
     `
 
   // TODO: allow simple markup, properly convert it
-  const descriptionHtml = description || ''
+  const descriptionHtml = nmd(description) || ''
 
   const appHtml = `
     <head>

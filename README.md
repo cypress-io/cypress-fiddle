@@ -57,7 +57,7 @@ The rest of the properties are optional
 
 - `html` to mount as DOM nodes before the test begins
 - `name` is the name to display at the top of the page, otherwise the test title will be used
-- `description` gives extra test description under the name
+- `description` gives extra test description under the name, supports Markdown via [nmd](https://github.com/Holixus/nano-markdown)
 
 The next properties are NOT used by `cy.runExample` but are used by the `testExamples` function from this package.
 
