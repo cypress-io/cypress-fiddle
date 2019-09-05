@@ -2,6 +2,7 @@
   "name": "@cypress/fiddle",
   "version": "1.0.0",
   "description": "Generate Cypress tests from HTML and JS",
+  "private": false,
   "main": "src",
   "types": "src/index.d.ts",
   "files": [

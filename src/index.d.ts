@@ -3,6 +3,24 @@
 type HTML = string
 type JavaScript = string
 
+/**
+ * Options for creating a single test fiddle.
+ * @example
+  ```
+  {
+    name: 'simple test',
+    description: `
+      This is the simplest test possible. Just finds an element by ID.
+    `,
+    html: `
+      <div id="my-element">Hi there</div>
+    `,
+    test: `
+      cy.get('#my-element')
+    `
+  }
+  ```
+ */
 interface RunExampleOptions {
   name?: string,
   description?: string,
