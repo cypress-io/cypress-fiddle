@@ -7,7 +7,10 @@ interface RunExampleOptions {
   name?: string,
   description?: string,
   html?: HTML,
-  test: JavaScript
+  test: JavaScript,
+  // skip and only are exclusive - they cannot be both set to true
+  skip?: boolean,
+  only?: boolean
 }
 
 declare namespace Cypress {

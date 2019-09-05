@@ -65,9 +65,23 @@ const isTestObject = o => o.test
 const createTest = (name, test) => {
   name = name || test.name
 
+  if (test.skip && test.only) {
+    throw new Error(
+      `Test "${name}" has both skip: true and only: true, which is impossible`
+    )
+  }
+
   if (test.skip) {
     console.log('skipping test "%s"', name)
     it.skip(name, () => {
+      cy.runExample(test)
+    })
+    return
+  }
+
+  if (test.only) {
+    console.log('exclusive test "%s"', name)
+    it.only(name, () => {
       cy.runExample(test)
     })
     return
