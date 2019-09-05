@@ -2,6 +2,7 @@ import { source } from 'common-tags'
 export default [
   {
     name: 'async refresh of first item',
+    description: 'Read https://on.cypress.io/retry-ability guide',
     html: source`
       <ul>
         <li data-cy="name">Bob</li>
