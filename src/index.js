@@ -1,6 +1,8 @@
 /// <reference path="./index.d.ts" />
+// @ts-check
 
-const nmd = require('nano-markdown')
+const { createMarkdown } = require('safe-marked')
+const markdown = createMarkdown()
 
 Cypress.Commands.add('runExample', options => {
   const { name, description, html, test } = options
@@ -25,7 +27,7 @@ Cypress.Commands.add('runExample', options => {
     `
 
   // TODO: allow simple markup, properly convert it
-  const descriptionHtml = nmd(description || '')
+  const descriptionHtml = markdown(description || '')
 
   const appHtml = `
     <head>

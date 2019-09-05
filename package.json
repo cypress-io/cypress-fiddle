@@ -26,7 +26,7 @@
     "semantic-release": "15.13.24"
   },
   "dependencies": {
-    "nano-markdown": "1.2.0"
+    "safe-marked": "1.0.1"
   },
   "repository": {
     "type": "git",

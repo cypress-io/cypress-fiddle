@@ -2,7 +2,7 @@
 
 const test = {
   description:
-    'This **test** has _markdown_, thanks to [nmd](+https://github.com/Holixus/nano-markdown)',
+    'This **test** has _markdown_, thanks to [safe-marked](+https://github.com/azu/safe-marked)',
   html: `
     <div>Hello</div>
   `,
