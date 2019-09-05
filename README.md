@@ -55,7 +55,7 @@ Which produces
 
 ### Parameters
 
-The test object can have multiple String properties, see [src/index.d.ts](src/index.d.ts) for all.
+The test object can have multiple properties, see [src/index.d.ts](src/index.d.ts) for all.
 
 - `test` JavaScript with Cypress commands, required
 
