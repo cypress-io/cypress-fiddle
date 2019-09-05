@@ -65,6 +65,14 @@ const isTestObject = o => o.test
 const createTest = (name, test) => {
   name = name || test.name
 
+  if (test.skip) {
+    console.log('skipping test "%s"', name)
+    it.skip(name, () => {
+      cy.runExample(test)
+    })
+    return
+  }
+
   it(name, () => {
     cy.runExample(test)
   })
