@@ -6,7 +6,9 @@ Cypress.Commands.add('runExample', options => {
   const { name, description, html, test } = options
   const testTitle = name || cy.state('runnable').title
 
-  expect(test, 'must have test source').to.be.a('string')
+  if (typeof test !== 'string' || !test) {
+    expect(test, 'must have test source').to.be.a('string')
+  }
 
   const htmlSection = html
     ? `<h2>HTML</h2>
