@@ -62,3 +62,77 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 - `skip` creates a skipped test with `it.skip`
 - `only` creates an exclusive test with `it.only`
 
+### Create multiple tests
+
+Instead of writing `cy.runExample` one by one, you can collect all test definitions into a list or a nested object of suites and create tests automatically.
+
+For example, here is a list of tests created from an array
+
+```js
+import { testExamples } from '@cypress/fiddle'
+const tests = [
+  {
+    name: 'first test',
+    description: 'cy.wrap example',
+    test: `
+      cy.wrap('hello').should('have.length', 5)
+    `
+  },
+  {
+    name: 'second test',
+    description: 'cy.wrap + cy.then example',
+    test: `
+        cy.wrap()
+          .then(() => {
+            cy.log('In .then')
+          })
+      `
+  }
+]
+testExamples(tests)
+```
+
+![List of tests](images/list.png)
+
+You can create suites by just having nested objects. Each object becomes either a suite or a test.
+
+```js
+import { testExamples } from '@cypress/fiddle'
+const suite = {
+  'parent suite': {
+    'inner suite': [
+      {
+        name: 'a test',
+        html: `
+          <div id="name">Joe</div>
+        `,
+        test: `
+          cy.contains('#name', 'Joe')
+        `
+      }
+    ],
+    'list test': {
+      html: `
+        <ul>
+          <li>Alice</li>
+          <li>Bob</li>
+          <li>Cory</li>
+        </ul>
+      `,
+      test: `
+        cy.get('li').should('have.length', 3)
+          .first().should('contain', 'Alice')
+      `
+    }
+  }
+}
+testExamples(suite)
+```
+
+![Tree of tests](images/tree.png)
+
+Find more examples in [cypress/integration](cypress/integration) folder.
+
+## Publishing
+
+Automatic semantic release on CircleCI using [Cypress Circle Orb](https://github.com/cypress-io/circleci-orb), see [circle.yml](circle.yml) file.
