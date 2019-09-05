@@ -1,6 +1,28 @@
 import { source } from 'common-tags'
 
+const smallTests = [
+  {
+    name: 'first test',
+    description: '[cy.wrap()](+https://on.cypress.io/wrap) example',
+    test: `
+      cy.wrap('hello').should('have.length', 5)
+    `
+  },
+  {
+    name: 'second test',
+    only: true,
+    description: '`cy.wrap() + cy.then()` example',
+    test: `
+        cy.wrap()
+          .then(() => {
+            cy.log('In .then')
+          })
+      `
+  }
+]
+
 export default {
+  'small tests': smallTests,
   'cy.wrap()': {
     'detects when property gets added to an object': {
       test: source`
