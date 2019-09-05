@@ -96,7 +96,7 @@ const createTest = (name, test) => {
  * Processes a tree of test definitions, each with HTML and JS
  * and makes each into a live test. See examples in "integration" folder.
  */
-export const testExamples = maybeTest => {
+const testExamples = maybeTest => {
   if (isTestObject(maybeTest)) {
     createTest(maybeTest.name, maybeTest)
     return
@@ -131,3 +131,5 @@ export const testExamples = maybeTest => {
     })
   })
 }
+
+module.exports = { testExamples }
