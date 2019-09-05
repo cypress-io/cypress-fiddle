@@ -102,6 +102,14 @@ export const testExamples = maybeTest => {
     return
   }
 
+  if (Array.isArray(maybeTest)) {
+    console.log('list of tests')
+    maybeTest.forEach(test => {
+      createTest(test.name, test)
+    })
+    return
+  }
+
   forEach(maybeTest, (value, name) => {
     console.log({ name, value })
 
@@ -116,15 +124,16 @@ export const testExamples = maybeTest => {
       return
     }
 
-    if (Array.isArray(value)) {
-      console.log('list of tests')
-      value.forEach(test => {
-        createTest(test.name, test)
-      })
-      return
-    }
+    // if (Array.isArray(value)) {
+    //   console.log('list of tests inside value')
+    //   value.forEach(test => {
+    //     createTest(test.name, test)
+    //   })
+    //   return
+    // }
 
     // final choice - create nested suite of tests
+    console.log('creating new suite "%s"', name)
     describe(name, () => {
       testExamples(value)
     })
