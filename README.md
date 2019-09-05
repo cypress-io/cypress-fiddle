@@ -1,6 +1,8 @@
 # cypress-fiddle [![renovate-app badge][renovate-badge]][renovate-app] [![CircleCI](https://circleci.com/gh/cypress-io/cypress-fiddle/tree/master.svg?style=svg)](https://circleci.com/gh/cypress-io/cypress-fiddle/tree/master)
 > Generate Cypress tests from HTML and JS
 
+The helper command and utility function in this package allows you to instantly experiment with Cypress code by creating a tiny live HTML fiddle and run E2E test against it.
+
 ## Install
 
 After installing Cypress with `npm i -D cypress` add this module
@@ -93,6 +95,28 @@ testExamples(tests)
 ```
 
 ![List of tests](images/list.png)
+
+While working with tests, you can skip a test or make it exclusive. For example to skip the first test add `skip: true` property
+
+```js
+{
+  name: 'first test',
+  description: 'cy.wrap example',
+  skip: true
+  ...
+}
+```
+
+Or run just this test using `only: true` property
+
+```js
+{
+  name: 'first test',
+  description: 'cy.wrap example',
+  only: true
+  ...
+}
+```
 
 You can create suites by just having nested objects. Each object becomes either a suite or a test.
 
