@@ -1,6 +1,6 @@
 {
   "name": "@cypress/fiddle",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Generate Cypress tests from HTML and JS",
   "private": false,
   "main": "src",
@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "test": "cypress run",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "cypress",
@@ -21,7 +22,8 @@
   "devDependencies": {
     "common-tags": "1.8.0",
     "cypress": "3.4.1",
-    "cypress-pipe": "1.5.0"
+    "cypress-pipe": "1.5.0",
+    "semantic-release": "^15.13.24"
   },
   "dependencies": {},
   "repository": {
