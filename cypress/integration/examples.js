@@ -143,6 +143,16 @@ export default {
         cy.contains('label', /^Default rate$/)
           .should('have.attr', 'for', 'client_default_rate')
       `
+    },
+    'single a': {
+      only: false,
+      html: source`
+        <a id="single">Single anchor</a>
+      `,
+      test: source`
+        // yields "a"
+        cy.get('a').should('have.id', 'single')
+      `
     }
   }
 }
