@@ -165,6 +165,21 @@ export default {
       test: source`
         cy.get('.one.two.three.four').should('have.text', 'correct element')
       `
+    },
+    'button title attribute': {
+      only: false,
+      html: source`
+        <button type="button" data-toggle="tooltip" data-placement="top"
+          title="1123bad: Device is not in the factory account" class="btn btn-xs btn-danger">
+          <a href="/inventory/devices/1123bad" class="serial">1123bad</a>
+          <i class="fa fa-exclamation"></i>
+        </button>
+      `,
+      test: source`
+        cy.get('button.btn-danger')     // gets button that satisfies next assertion
+          .should('have.attr', 'title') // yields title attribute string
+          .should('match', /^1123bad:/) // checks title
+      `
     }
   }
 }
