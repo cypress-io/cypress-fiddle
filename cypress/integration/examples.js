@@ -153,6 +153,18 @@ export default {
         // yields "a"
         cy.get('a').should('have.id', 'single')
       `
+    },
+    'several classes': {
+      only: false,
+      html: source`
+        <div>
+          <div class="one two three">incorrect element</div>
+          <div class="one two three four">correct element</div>
+        </div>
+      `,
+      test: source`
+        cy.get('.one.two.three.four').should('have.text', 'correct element')
+      `
     }
   }
 }
