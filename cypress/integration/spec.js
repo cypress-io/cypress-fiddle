@@ -125,6 +125,8 @@ context('Cypress example', () => {
       `
 
       cy.runExample({ html, test })
+      // cy.wait(5000)
+      // cy.screenshot('my example', { log: true, capture: 'runner' })
     })
   })
 })
