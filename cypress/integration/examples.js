@@ -11,6 +11,43 @@ export default {
         test: source`
           cy.get('#my-element')
         `
+      },
+      '.get().contains()': {
+        skip: true,
+        html: source`
+          <ul>
+            <li>first</li>
+            <li>second</li>
+          </ul>
+        `,
+        test: source`
+          setTimeout(() => {
+            const newLi = window.document.createElement('li')
+            newLi.innerText = 'third'
+            window.document.querySelector('ul').appendChild(newLi)
+          }, 2000)
+          // DOES NOT WORK
+          // because it only checks the first two LI elements
+          // over and over - not noticing the 3rd LI
+          cy.get('li').contains('third')
+        `
+      },
+      '.get().should("contain")': {
+        only: false,
+        html: source`
+          <ul>
+            <li>first</li>
+            <li>second</li>
+          </ul>
+        `,
+        test: source`
+          setTimeout(() => {
+            const newLi = window.document.createElement('li')
+            newLi.innerText = 'third'
+            window.document.querySelector('ul').appendChild(newLi)
+          }, 2000)
+          cy.get('li').should('contain', 'third')
+        `
       }
     },
     'select input by label': {
