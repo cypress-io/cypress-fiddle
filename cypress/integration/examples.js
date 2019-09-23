@@ -48,6 +48,17 @@ export default {
           }, 2000)
           cy.get('li').should('contain', 'third')
         `
+      },
+      '.get class selector by partial text': {
+        only: false,
+        html: source`
+          <div class="css-abc123-header">Header</div>
+          <div class="css-xyz123-footer small">Footer</div>
+        `,
+        test: source`
+          cy.get('[class*=footer]').should('have.text', 'Footer')
+            .and('have.class', 'small')
+        `
       }
     },
     'select input by label': {
