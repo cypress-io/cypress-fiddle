@@ -1,4 +1,5 @@
 {
+  "testFiles": "**/*.md",
   "ignoreTestFiles": [
     "examples.js",
     "*-examples.js"
