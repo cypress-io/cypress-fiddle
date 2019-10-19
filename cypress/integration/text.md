@@ -13,6 +13,20 @@ cy.contains('Hello').should('be.visible')
 
 <!-- fiddle-end -->
 
+Some text between the fiddles
+
+<!-- fiddle Second fiddle -->
+Second fiddle here
+
+```html
+<div>Bye</div>
+```
+
+```js
+cy.contains('Bye').should('be.visible')
+```
+<!-- fiddle-end -->
+
 after fiddle
 
 <!-- fiddle-no -->

@@ -7,6 +7,12 @@ const cyBrowserify = require('@cypress/browserify-preprocessor')()
 
 const testExamplesPath = path.join(__dirname, '..', '..')
 
+/**
+ * Finds optional fiddle name from the comment line
+ * `<!-- fiddle my name -->` returns "my name".
+ */
+const findFiddleName = commentLine => {}
+
 module.exports = (on, config) => {
   on('file:preprocessor', file => {
     const { filePath, outputPath, shouldWatch } = file
@@ -26,12 +32,19 @@ module.exports = (on, config) => {
     const lines = md.split('\n')
     const fiddles = []
 
-    let start
+    let start = 0
     do {
-      start = lines.indexOf('<!-- fiddle -->', start)
+      console.log('start with %d', start)
+      start = lines.findIndex(
+        (line, k) => k >= start && line.startsWith('<!-- fiddle ')
+      )
       if (start === -1) {
         break
       }
+
+      const testName =
+        findFiddleName(lines[start]) || `fiddle at line ${start + 1}`
+
       const end = lines.indexOf('<!-- fiddle-end -->', start)
       if (end === -1) {
         break
@@ -42,7 +55,10 @@ module.exports = (on, config) => {
       // console.log('----')
       // console.log(fiddle)
       // console.log('----')
-      fiddles.push(fiddle)
+      fiddles.push({
+        name: testName,
+        fiddle
+      })
 
       start = end + 1
     } while (true)
@@ -56,7 +72,7 @@ module.exports = (on, config) => {
     // list of fiddles converted into JavaScript
     const testFiddles = []
     fiddles.forEach(fiddle => {
-      const ast = parse(fiddle)
+      const ast = parse(fiddle.fiddle)
       console.log('markdown fiddle AST')
       console.log(ast)
       const htmlMaybe = ast.children.find(
@@ -69,6 +85,7 @@ module.exports = (on, config) => {
       console.log('found js block?', jsMaybe)
       if (jsMaybe) {
         testFiddles.push({
+          name: fiddle.name,
           test: jsMaybe.value,
           html: htmlMaybe ? htmlMaybe.value : null
         })
