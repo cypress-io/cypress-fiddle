@@ -90,13 +90,11 @@ module.exports = (on, config) => {
     )
     console.log('wrote temp file', writtenTempFilename)
 
-    // fs.writeFileSync(outputPath, specSource, 'utf8')
-    // resolve(writtenTempFilename)
     return cyBrowserify({
       filePath: writtenTempFilename,
       outputPath,
-      shouldWatch
+      shouldWatch,
+      on: file.on
     })
   })
-  // })
 }
