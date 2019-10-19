@@ -11,7 +11,12 @@ const testExamplesPath = path.join(__dirname, '..', '..')
  * Finds optional fiddle name from the comment line
  * `<!-- fiddle my name -->` returns "my name".
  */
-const findFiddleName = commentLine => {}
+const findFiddleName = commentLine => {
+  const matches = /fiddle (.+)-->/.exec(commentLine)
+  if (matches && matches.length) {
+    return matches[1].trim()
+  }
+}
 
 module.exports = (on, config) => {
   on('file:preprocessor', file => {
