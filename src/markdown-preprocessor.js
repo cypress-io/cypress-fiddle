@@ -20,27 +20,26 @@ const findFiddleName = commentLine => {
 }
 
 /**
+  Parses Markdown file looking for special fiddle comments. If found,
+  creates separate tests from them. If processing ".js" or ".coffee" files just
+  calls Cypress Browserify preprocessor.
 
-  @example
+  ```
   const mdPreprocessor = require('@cypress/fiddle/src/markdown-preprocessor')
   module.exports = (on, config) => {
     on('file:preprocessor', mdPreprocessor)
   }
+  ```
 */
 const mdPreprocessor = file => {
   const { filePath, outputPath, shouldWatch } = file
 
-  if (filePath.endsWith('.js')) {
-    // TODO apply default ES6 preprocessor
+  if (filePath.endsWith('.js') || filePath.endsWith('.coffee')) {
     return cyBrowserify(file)
   }
 
   debug({ filePath, outputPath, shouldWatch })
-  // return new Promise((resolve, reject) => {
   const md = fs.readFileSync(filePath, 'utf8')
-  // console.log('----')
-  // console.log(md)
-  // console.log('----')
 
   const lines = md.split('\n')
   const fiddles = []
