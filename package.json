@@ -29,6 +29,7 @@
     "@cypress/browserify-preprocessor": "2.1.1",
     "@textlint/markdown-to-ast": "6.1.5",
     "common-tags": "1.8.0",
+    "debug": "4.1.1",
     "safe-marked": "2.0.0",
     "temp-write": "4.0.0"
   },

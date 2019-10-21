@@ -165,6 +165,10 @@ testExamples(suite)
 
 Find more examples in [cypress/integration](cypress/integration) folder.
 
+## Debug
+
+To see debug logs, use `DEBUG=@cypress/fiddle` when running Cypress.
+
 ## Publishing
 
 Automatic semantic release on CircleCI using [Cypress Circle Orb](https://github.com/cypress-io/circleci-orb), see [circle.yml](circle.yml) file.

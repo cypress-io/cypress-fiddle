@@ -4,6 +4,7 @@ const { source } = require('common-tags')
 const { parse } = require('@textlint/markdown-to-ast')
 const tempWrite = require('temp-write')
 const cyBrowserify = require('@cypress/browserify-preprocessor')()
+const debug = require('debug')('@cypress/fiddle')
 
 const testExamplesPath = path.join(__dirname, '..', '..')
 
@@ -27,7 +28,7 @@ module.exports = (on, config) => {
       return cyBrowserify(file)
     }
 
-    console.log({ filePath, outputPath, shouldWatch })
+    debug({ filePath, outputPath, shouldWatch })
     // return new Promise((resolve, reject) => {
     const md = fs.readFileSync(filePath, 'utf8')
     // console.log('----')
@@ -39,7 +40,7 @@ module.exports = (on, config) => {
 
     let start = 0
     do {
-      console.log('start with %d', start)
+      debug('start with %d', start)
       start = lines.findIndex(
         (line, k) => k >= start && line.startsWith('<!-- fiddle ')
       )
@@ -72,22 +73,22 @@ module.exports = (on, config) => {
     // const matches = fiddleRegex.exec(md)
     // console.log('matches')
     // console.log(matches)
-    console.log('found %d fiddles in file %s', fiddles.length, filePath)
-    console.log(fiddles)
+    debug('found %d fiddles in file %s', fiddles.length, filePath)
+    debug(fiddles)
     // list of fiddles converted into JavaScript
     const testFiddles = []
     fiddles.forEach(fiddle => {
       const ast = parse(fiddle.fiddle)
-      console.log('markdown fiddle AST')
-      console.log(ast)
+      // console.log('markdown fiddle AST')
+      // console.log(ast)
       const htmlMaybe = ast.children.find(
         n => n.type === 'CodeBlock' && n.lang === 'html'
       )
-      console.log('found html block?', htmlMaybe)
+      // console.log('found html block?', htmlMaybe)
       const jsMaybe = ast.children.find(
         n => n.type === 'CodeBlock' && n.lang === 'js'
       )
-      console.log('found js block?', jsMaybe)
+      // console.log('found js block?', jsMaybe)
       if (jsMaybe) {
         testFiddles.push({
           name: fiddle.name,
@@ -97,7 +98,8 @@ module.exports = (on, config) => {
       }
     })
 
-    console.log(testFiddles)
+    // console.log(testFiddles)
+    debug('Found fiddles: %d', testFiddles.length)
 
     const specSource = source`
       const fiddles = ${JSON.stringify(testFiddles, null, 2)}
@@ -105,12 +107,12 @@ module.exports = (on, config) => {
       import { testExamples } from '${testExamplesPath}'
       testExamples(fiddles)
     `
-    console.log(specSource)
+    // console.log(specSource)
     const writtenTempFilename = tempWrite.sync(
       specSource,
       path.basename(filePath) + '.js'
     )
-    console.log('wrote temp file', writtenTempFilename)
+    debug('wrote temp file', writtenTempFilename)
 
     return cyBrowserify({
       filePath: writtenTempFilename,
