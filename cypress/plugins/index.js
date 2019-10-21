@@ -85,9 +85,9 @@ module.exports = (on, config) => {
         n => n.type === 'CodeBlock' && n.lang === 'html'
       )
       // console.log('found html block?', htmlMaybe)
-      const jsMaybe = ast.children.find(
-        n => n.type === 'CodeBlock' && n.lang === 'js'
-      )
+      const isJavaScript = n =>
+        n.type === 'CodeBlock' && (n.lang === 'js' || n.lang === 'javascript')
+      const jsMaybe = ast.children.find(isJavaScript)
       // console.log('found js block?', jsMaybe)
       if (jsMaybe) {
         testFiddles.push({
