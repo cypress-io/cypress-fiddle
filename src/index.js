@@ -39,7 +39,7 @@ Cypress.Commands.add('runExample', options => {
       <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
-      <h1>${testTitle}</h1>
+      ${testTitle ? `<h1>${testTitle}</h1>` : ''}
       <div>${descriptionHtml}</div>
       <h2>Test code</h2>
 

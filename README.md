@@ -165,6 +165,31 @@ testExamples(suite)
 
 Find more examples in [cypress/integration](cypress/integration) folder.
 
+
+
+### Markdown
+
+This package includes a JS/CoffeeScript/Markdown preprocessor that can find and run tests in `.md` files. Just surround the tests with HTML comments like this:
+
+    <!-- fiddle Test name here -->
+    Add additional text if you want. HTML code block is optional.
+
+    ```html
+    <div>Example</div>
+    ```
+
+    Test code block that should be run as a test
+    ```js
+    cy.contains('Bye').should('be.visible')
+    ```
+    <!-- fiddle-end -->
+
+Don't forget to change your `testFiles` in `cypress.json` to include [Markdown files](https://github.com/cypress-io/cypress/issues/5401)
+
+## Debug
+
+To see debug logs, use `DEBUG=@cypress/fiddle` when running Cypress.
+
 ## Publishing
 
 Automatic semantic release on CircleCI using [Cypress Circle Orb](https://github.com/cypress-io/circleci-orb), see [circle.yml](circle.yml) file.
