@@ -184,7 +184,28 @@ This package includes a JS/CoffeeScript/Markdown preprocessor that can find and 
     ```
     <!-- fiddle-end -->
 
-Don't forget to change your `testFiles` in `cypress.json` to include [Markdown files](https://github.com/cypress-io/cypress/issues/5401)
+See example [bahmutov/vuepress-cypress-test-example](https://github.com/bahmutov/vuepress-cypress-test-example) and [live site](https://vuepress-cypress-test-example.netlify.com/).
+
+#### Installation
+
+In your plugins file use
+
+```js
+const mdPreprocessor = require('@cypress/fiddle/src/markdown-preprocessor')
+module.exports = (on, config) => {
+  on('file:preprocessor', mdPreprocessor)
+}
+```
+
+And in `cypress.json` file allow Markdown files
+
+```json
+{
+  "testFiles": "*.md"
+}
+```
+
+Warning: [issue #5401](https://github.com/cypress-io/cypress/issues/5401)
 
 ## Debug
 
