@@ -9,4 +9,5 @@ workflows:
             - run: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
           no-workspace: true
           post-steps:
+            - run: npx cypress run --config-file cypress-markdown.json
             - run: npm run semantic-release
