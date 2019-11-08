@@ -204,6 +204,13 @@ Notice how only the summary is displayed
 
 ![Hidden fiddle test](images/hidden-fiddle-test.png)
 
+**Note:** by default the summary element is displayed in the HTML. You can the fiddle completely using
+```html
+<details style="display:none">
+ ...
+</details>
+```
+
 #### Installation
 
 In your plugins file use
