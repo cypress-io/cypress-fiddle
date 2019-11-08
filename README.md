@@ -186,6 +186,24 @@ This package includes a JS/CoffeeScript/Markdown preprocessor that can find and 
 
 See example [bahmutov/vuepress-cypress-test-example](https://github.com/bahmutov/vuepress-cypress-test-example) and [live site](https://vuepress-cypress-test-example.netlify.com/).
 
+### Hiding fiddle in Markdown
+
+You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
+
+**Markdown**
+
+![Hidden fiddle Markdown](images/hidden-fiddle.png)
+
+**Rendered page**
+
+![Hidden fiddle Markdown preview](images/hidden-fiddle-preview.png)
+
+Notice how only the summary is displayed
+
+**Test runner**
+
+![Hidden fiddle test](images/hidden-fiddle-test.png)
+
 #### Installation
 
 In your plugins file use
