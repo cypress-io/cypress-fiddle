@@ -12,8 +12,12 @@ Cypress.Commands.add('runExample', options => {
     expect(test, 'must have test source').to.be.a('string')
   }
 
-  const htmlSection = html
-    ? `<h2>HTML</h2>
+  // really dummy way to see if the test code contains "cy.visit(...)"
+  // because in that case we should not use "cy.within" or mount html
+  const isTestingExternalSite = test.includes('cy.visit(')
+  if (!isTestingExternalSite) {
+    const htmlSection = html
+      ? `<h2>HTML</h2>
     <div id="html">
     <pre><code class="html">${Cypress._.escape(html)}</code></pre>
     </div>
@@ -23,13 +27,13 @@ Cypress.Commands.add('runExample', options => {
     ${html}
     </div>
     `
-    : `<div id="live"></div>
+      : `<div id="live"></div>
     `
 
-  // TODO: allow simple markup, properly convert it
-  const descriptionHtml = markdown(description || '')
+    // TODO: allow simple markup, properly convert it
+    const descriptionHtml = markdown(description || '')
 
-  const appHtml = `
+    const appHtml = `
     <head>
       <meta charset="UTF-8">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/github.min.css">
@@ -48,18 +52,32 @@ Cypress.Commands.add('runExample', options => {
       ${htmlSection}
     </body>
   `
-  const document = cy.state('document')
-  document.write(appHtml)
-  document.close()
+    const document = cy.state('document')
+    document.write(appHtml)
+    document.close()
 
-  // make sure when "eval" runs, the "window" in the test code
-  // points at the application's iframe window object
-  const window = cy.state('window')
+    // make sure when "eval" runs, the "window" in the test code
+    // points at the application's iframe window object
+    const window = cy.state('window')
 
-  const noLog = { log: false }
-  cy.get('#live', noLog).within(noLog, () => {
+    const noLog = { log: false }
+
+    if (test.includes('cy.visit(')) {
+      // really dummy way to see if the test code contains "cy.visit(...)"
+      // because in that case we should not use "cy.within" or mount html
+    }
+    cy.get('#live', noLog).within(noLog, () => {
+      eval(test)
+    })
+  } else {
+    if (html) {
+      throw new Error(
+        'You have passed HTML block for this test, but also used cy.visit in the test, which one is it?'
+      )
+    }
+    // run "full" test
     eval(test)
-  })
+  }
 })
 
 const { forEach } = Cypress._
