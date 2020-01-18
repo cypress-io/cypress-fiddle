@@ -31,7 +31,7 @@
     "@textlint/markdown-to-ast": "6.1.6",
     "common-tags": "1.8.0",
     "debug": "4.1.1",
-    "safe-marked": "2.0.0",
+    "safe-marked": "3.0.0",
     "temp-write": "4.0.0"
   },
   "repository": {
