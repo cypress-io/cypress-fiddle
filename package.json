@@ -24,7 +24,7 @@
   "devDependencies": {
     "cypress": "3.8.3",
     "cypress-pipe": "1.6.0",
-    "semantic-release": "15.13.32"
+    "semantic-release": "15.14.0"
   },
   "dependencies": {
     "@cypress/browserify-preprocessor": "2.1.1",
