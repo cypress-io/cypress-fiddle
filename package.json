@@ -27,7 +27,7 @@
     "semantic-release": "15.14.0"
   },
   "dependencies": {
-    "@cypress/browserify-preprocessor": "2.1.1",
+    "@cypress/browserify-preprocessor": "2.1.4",
     "@textlint/markdown-to-ast": "6.1.6",
     "common-tags": "1.8.0",
     "debug": "4.1.1",
