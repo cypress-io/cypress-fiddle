@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@cypress/browserify-preprocessor": "2.1.4",
-    "@textlint/markdown-to-ast": "6.1.6",
+    "@textlint/markdown-to-ast": "6.1.7",
     "common-tags": "1.8.0",
     "debug": "4.1.1",
     "safe-marked": "3.0.0",
