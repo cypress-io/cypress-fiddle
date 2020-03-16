@@ -22,7 +22,7 @@
   "author": "Gleb Bahmutov <gleb@cypress.io>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "4.1.0",
+    "cypress": "4.2.0",
     "cypress-pipe": "1.6.4",
     "semantic-release": "15.14.0"
   },
