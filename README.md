@@ -184,7 +184,7 @@ This package includes a JS/CoffeeScript/Markdown preprocessor that can find and 
     ```
     <!-- fiddle-end -->
 
-See example [bahmutov/vuepress-cypress-test-example](https://github.com/bahmutov/vuepress-cypress-test-example) and [live site](https://vuepress-cypress-test-example.netlify.com/).
+See example [bahmutov/vuepress-cypress-test-example](https://github.com/bahmutov/vuepress-cypress-test-example) and [live site](https://vuepress-cypress-test-example.netlify.com/). Read blog posts [Run End-to-end Tests from Markdown Files](https://glebbahmutov.com/blog/cypress-fiddle/) and [Self-testing JAM pages](https://www.cypress.io/blog/2019/11/13/self-testing-jam-pages/).
 
 ### Hiding fiddle in Markdown
 
