@@ -29,3 +29,30 @@ cy.get('#app').should('be.visible')
 ```
 
 <!-- fiddle-end -->
+
+<!-- fiddle split fiddle -->
+This fiddle has common HTML code
+
+```html
+<div id="app">nothing here</div>
+<script>
+setTimeout(() => {
+  document.getElementById('app').innerText = 'something'
+}, 2000)
+</script>
+```
+
+Then first assertion
+
+```js
+cy.contains('#app', 'something')
+```
+
+Then more test code here
+
+```js
+// this command will only run AFTER cy.contains finishes
+cy.get('#app').should('be.visible')
+```
+
+<!-- fiddle-end -->

@@ -93,12 +93,17 @@ const mdPreprocessor = file => {
     // console.log('found html block?', htmlMaybe)
     const isJavaScript = n =>
       n.type === 'CodeBlock' && (n.lang === 'js' || n.lang === 'javascript')
-    const jsMaybe = ast.children.find(isJavaScript)
+
+    // a single fiddle can have multiple JS blocks
+    // we want to find them all and merge into a single test
+    const jsMaybe = ast.children.filter(isJavaScript)
+    console.log('js blocks', jsMaybe)
     // console.log('found js block?', jsMaybe)
-    if (jsMaybe) {
+    if (jsMaybe.length) {
+      const testCode = jsMaybe.map(b => b.value).join('\n')
       testFiddles.push({
         name: fiddle.name,
-        test: jsMaybe.value,
+        test: testCode,
         html: htmlMaybe ? htmlMaybe.value : null
       })
     }
