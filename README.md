@@ -186,6 +186,23 @@ This package includes a JS/CoffeeScript/Markdown preprocessor that can find and 
 
 See example [bahmutov/vuepress-cypress-test-example](https://github.com/bahmutov/vuepress-cypress-test-example) and [live site](https://vuepress-cypress-test-example.netlify.com/). Read blog posts [Run End-to-end Tests from Markdown Files](https://glebbahmutov.com/blog/cypress-fiddle/) and [Self-testing JAM pages](https://www.cypress.io/blog/2019/11/13/self-testing-jam-pages/).
 
+You can have common HTML block and split the test across multiple JavaScript code blocks. This is useful to explain the test step by step
+
+    This test has multiple parts. First, it confirms the string value
+    ```js
+    cy.wrap('first').should('equal', 'first')
+    ```
+    Then it checks if 42 is 42
+    ```js
+    cy.wrap(42).should('equal', 42)
+    ```
+
+The actual test to be executed will be
+```js
+cy.wrap('first').should('equal', 'first')
+cy.wrap(42).should('equal', 42)
+```
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
