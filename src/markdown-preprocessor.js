@@ -13,10 +13,20 @@ const testExamplesPath = path.join(__dirname, '.')
  * `<!-- fiddle my name -->` returns "my name".
  */
 const findFiddleName = commentLine => {
-  const matches = /fiddle (.+)-->/.exec(commentLine)
+  const matches = /fiddle(?:\.only|\.skip)? (.+)-->/.exec(commentLine)
   if (matches && matches.length) {
     return matches[1].trim()
   }
+}
+
+const isFiddleOnly = (line) => line.startsWith('<!-- fiddle.only ')
+const isFiddleSkip = (line) => line.startsWith('<!-- fiddle.skip ')
+
+/**
+ * Checks if the given line starts with "<!-- fiddle" or one of its variations.
+ */
+const isFiddleStartLine = (line) => {
+  return line.startsWith('<!-- fiddle ') || isFiddleOnly(line) || isFiddleSkip(line)
 }
 
 /**
@@ -45,17 +55,19 @@ const mdPreprocessor = file => {
   const fiddles = []
 
   let start = 0
+  let startLine
   do {
     debug('start with %d', start)
     start = lines.findIndex(
-      (line, k) => k >= start && line.startsWith('<!-- fiddle ')
+      (line, k) => k >= start && isFiddleStartLine(line)
     )
     if (start === -1) {
       break
     }
 
-    const testName =
-      findFiddleName(lines[start]) || `fiddle at line ${start + 1}`
+    startLine = lines[start]
+    const defaultFiddleName = `fiddle at line ${start + 1}`
+    const testName = findFiddleName(startLine) || defaultFiddleName
 
     const end = lines.indexOf('<!-- fiddle-end -->', start)
     if (end === -1) {
@@ -69,7 +81,9 @@ const mdPreprocessor = file => {
     // console.log('----')
     fiddles.push({
       name: testName,
-      fiddle
+      fiddle,
+      only: isFiddleOnly(startLine),
+      skip: isFiddleSkip(startLine),
     })
 
     start = end + 1
@@ -103,7 +117,9 @@ const mdPreprocessor = file => {
       testFiddles.push({
         name: fiddle.name,
         test: testCode,
-        html: htmlMaybe ? htmlMaybe.value : null
+        html: htmlMaybe ? htmlMaybe.value : null,
+        only: fiddle.only,
+        skip: fiddle.skip
       })
     }
   })
@@ -113,7 +129,6 @@ const mdPreprocessor = file => {
 
   const specSource = source`
       const fiddles = ${JSON.stringify(testFiddles, null, 2)}
-      console.table(fiddles)
       import { testExamples } from '${testExamplesPath}'
       testExamples(fiddles)
     `

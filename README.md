@@ -203,6 +203,15 @@ cy.wrap('first').should('equal', 'first')
 cy.wrap(42).should('equal', 42)
 ```
 
+### Skip and only
+
+You can skip a fiddle, or run only a particular fiddle similar to `it.skip` and `it.only`
+
+```
+<!-- fiddle.skip this is a skipped test -->
+<!-- fiddle.only this is an exclusive test -->
+```
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
