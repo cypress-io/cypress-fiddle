@@ -2,6 +2,7 @@
 // @ts-check
 
 const { createMarkdown } = require('safe-marked')
+const {safeHtml} = require('common-tags')
 const markdown = createMarkdown()
 
 Cypress.Commands.add('runExample', options => {
@@ -47,7 +48,7 @@ Cypress.Commands.add('runExample', options => {
       <div>${descriptionHtml}</div>
       <h2>Test code</h2>
 
-      <pre><code class="javascript">${test}</code></pre>
+      <pre><code class="javascript">${Cypress._.escape(test)}</code></pre>
 
       ${htmlSection}
     </body>
