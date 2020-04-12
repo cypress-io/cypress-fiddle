@@ -202,6 +202,16 @@ export default {
         cy.get('a').should('have.id', 'single')
       `
     },
+    'escapes tag': {
+      only: false,
+      html: source`
+        <a id="single">Single anchor</a>
+      `,
+      test: source`
+        // yields <a>...</a>
+        cy.get('a').should('have.id', 'single')
+      `
+    },
     'several classes': {
       only: false,
       html: source`
