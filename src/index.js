@@ -125,7 +125,7 @@ const testExamples = maybeTest => {
   }
 
   if (Array.isArray(maybeTest)) {
-    console.log('list of tests')
+    // console.log('list of tests')
     maybeTest.forEach(test => {
       createTest(test.name, test)
     })
@@ -133,10 +133,10 @@ const testExamples = maybeTest => {
   }
 
   forEach(maybeTest, (value, name) => {
-    console.log({ name, value })
+    // console.log({ name, value })
 
     if (isTestObject(value)) {
-      console.log('%s is a test', name)
+      // console.log('%s is a test', name)
 
       if (value.skip && value.only) {
         throw new Error(`Test ${name} has `)
@@ -147,7 +147,7 @@ const testExamples = maybeTest => {
     }
 
     // final choice - create nested suite of tests
-    console.log('creating new suite "%s"', name)
+    // console.log('creating new suite "%s"', name)
     describe(name, () => {
       testExamples(value)
     })
