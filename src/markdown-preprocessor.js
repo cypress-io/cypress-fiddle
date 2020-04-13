@@ -54,6 +54,16 @@ const mdPreprocessor = file => {
   const lines = md.split('\n')
   const fiddles = []
 
+  let pageTitle
+  const titleLine = lines.find(line => line.startsWith('# '))
+  if (titleLine) {
+    const matches = /^# (.+)$/.exec(titleLine)
+    if (matches && matches.length) {
+      pageTitle = matches[1].trim()
+      debug('page title "%s"', pageTitle)
+    }
+  }
+
   let start = 0
   let startLine
   do {
@@ -127,8 +137,12 @@ const mdPreprocessor = file => {
   // console.log(testFiddles)
   debug('Found fiddles: %d', testFiddles.length)
 
+  const createTests = pageTitle ? {
+    [pageTitle]: testFiddles
+  } : testFiddles
+
   const specSource = source`
-      const fiddles = ${JSON.stringify(testFiddles, null, 2)}
+      const fiddles = ${JSON.stringify(createTests, null, 2)}
       import { testExamples } from '${testExamplesPath}'
       testExamples(fiddles)
     `

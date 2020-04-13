@@ -212,6 +212,16 @@ You can skip a fiddle, or run only a particular fiddle similar to `it.skip` and 
 <!-- fiddle.only this is an exclusive test -->
 ```
 
+### Page title
+
+If the Markdown file has page title line like `# <some text>`, it will be used to create the top level suite of tests
+
+```js
+describe('<some text>', () => {
+  // tests
+})
+```
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
