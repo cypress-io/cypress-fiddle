@@ -222,6 +222,34 @@ describe('<some text>', () => {
 })
 ```
 
+### Live HTML
+
+You can include "live" html blocks in the fiddle - in that case they will become the test fragment.
+
+    <!-- fiddle includes live html -->
+    <div id="live-block">Live Block</div>
+    ```js
+    cy.contains('#live-block', 'Live Block').should('be.visible')
+    ```
+    <!-- fiddle-end -->
+
+When including HTML source fragment and live HTML block, live HTML block wins and will be used as the test fragment.
+
+    <!-- fiddle includes both live and html block -->
+    ```html
+    <div id="my-block">Block</div>
+    ```
+
+    <div id="live-block">Live Block</div>
+
+    ```js
+    // when including both live HTML block and
+    // html code block, the live HTML block wins
+    cy.contains('#live-block', 'Live Block').should('be.visible')
+    cy.contains('#my-block', 'Block').should('not.exist')
+    ```
+    <!-- fiddle-end -->
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
