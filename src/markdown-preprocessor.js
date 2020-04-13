@@ -1,3 +1,4 @@
+// @ts-check
 const fs = require('fs')
 const path = require('path')
 const { source } = require('common-tags')
@@ -111,8 +112,11 @@ const mdPreprocessor = file => {
     const ast = parse(fiddle.fiddle)
     // console.log('markdown fiddle AST')
     // console.log(ast)
-    const htmlMaybe = ast.children.find(
+    const htmlCodeBlockMaybe = ast.children.find(
       n => n.type === 'CodeBlock' && n.lang === 'html'
+    )
+    const htmlLiveBlockMaybe = ast.children.find(
+      n => n.type === 'Html'
     )
     // console.log('found html block?', htmlMaybe)
     const isJavaScript = n =>
@@ -124,10 +128,13 @@ const mdPreprocessor = file => {
 
     if (jsMaybe.length) {
       const testCode = jsMaybe.map(b => b.value).join('\n')
+
+      const htmlNode = htmlLiveBlockMaybe || htmlCodeBlockMaybe
+
       testFiddles.push({
         name: fiddle.name,
         test: testCode,
-        html: htmlMaybe ? htmlMaybe.value : null,
+        html: htmlNode ? htmlNode.value : null,
         only: fiddle.only,
         skip: fiddle.skip
       })
