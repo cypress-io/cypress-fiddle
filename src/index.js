@@ -6,12 +6,16 @@ const {safeHtml} = require('common-tags')
 const markdown = createMarkdown()
 
 Cypress.Commands.add('runExample', options => {
-  const { name, description, html, test } = options
-  const testTitle = name || cy.state('runnable').title
+  const { name, description, commonHtml, html, test } = options
+  const testTitle = name ||
+    // @ts-ignore
+    cy.state('runnable').title
 
   if (typeof test !== 'string' || !test) {
     expect(test, 'must have test source').to.be.a('string')
   }
+
+  const fullLiveHtml = commonHtml ? commonHtml + '\n' + html : html
 
   // really dummy way to see if the test code contains "cy.visit(...)"
   // because in that case we should not use "cy.within" or mount html
@@ -25,7 +29,7 @@ Cypress.Commands.add('runExample', options => {
 
     <h2>Live HTML</h2>
     <div id="live">
-    ${html}
+    ${fullLiveHtml}
     </div>
     `
       : `<div id="live"></div>
@@ -53,12 +57,15 @@ Cypress.Commands.add('runExample', options => {
       ${htmlSection}
     </body>
   `
+
+    // @ts-ignore
     const document = cy.state('document')
     document.write(appHtml)
     document.close()
 
     // make sure when "eval" runs, the "window" in the test code
     // points at the application's iframe window object
+    // @ts-ignore
     const window = cy.state('window')
 
     const noLog = { log: false }

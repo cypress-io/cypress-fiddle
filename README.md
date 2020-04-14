@@ -64,6 +64,7 @@ The rest of the properties are optional
 - `html` to mount as DOM nodes before the test begins
 - `name` the name to display at the top of the page, otherwise the test title will be used
 - `description` extra test description under the name, supports Markdown via [safe-marked](https://github.com/azu/safe-marked)
+- `commonHtml` is extra HTML markup to attach to the live HTML (if any) element. Useful for loading external stylesheets or styles without cluttering every HTML block
 
 The next properties are NOT used by `cy.runExample` but are used by the `testExamples` function from this package.
 

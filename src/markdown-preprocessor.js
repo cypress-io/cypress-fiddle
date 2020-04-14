@@ -23,6 +23,13 @@ const findFiddleName = commentLine => {
 const isFiddleOnly = (line) => line.startsWith('<!-- fiddle.only ')
 const isFiddleSkip = (line) => line.startsWith('<!-- fiddle.skip ')
 
+const isFiddleMarkup = (s) => s && s.startsWith('<!-- fiddle-markup')
+
+const extractFiddleMarkup = (s) => {
+  s = s.replace('<!-- fiddle-markup', '').replace('-->', '').trim()
+  return s
+}
+
 /**
  * Checks if the given line starts with "<!-- fiddle" or one of its variations.
  */
@@ -108,19 +115,21 @@ const mdPreprocessor = file => {
   debug(fiddles)
   // list of fiddles converted into JavaScript
   const testFiddles = []
+
+  const isHtmlCodeBlock = n => n.type === 'CodeBlock' && n.lang === 'html'
+  const isLiveHtml = n => n.type === 'Html'
+  const isJavaScript = n =>
+    n.type === 'CodeBlock' && (n.lang === 'js' || n.lang === 'javascript')
+
   fiddles.forEach(fiddle => {
     const ast = parse(fiddle.fiddle)
     // console.log('markdown fiddle AST')
     // console.log(ast)
-    const htmlCodeBlockMaybe = ast.children.find(
-      n => n.type === 'CodeBlock' && n.lang === 'html'
-    )
-    const htmlLiveBlockMaybe = ast.children.find(
-      n => n.type === 'Html'
-    )
+    const htmlCodeBlockMaybe = ast.children.find(s => isHtmlCodeBlock(s))
+    const htmlLiveBlockMaybe = ast.children.find(s => isLiveHtml(s) && !isFiddleMarkup(s.value))
+    const htmlMarkup = ast.children.find(isFiddleMarkup)
+
     // console.log('found html block?', htmlMaybe)
-    const isJavaScript = n =>
-      n.type === 'CodeBlock' && (n.lang === 'js' || n.lang === 'javascript')
 
     // a single fiddle can have multiple JS blocks
     // we want to find them all and merge into a single test
