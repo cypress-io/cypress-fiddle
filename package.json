@@ -10,7 +10,7 @@
     "bin"
   ],
   "bin": {
-    "export-fiddle": "bin/export-fiddle"
+    "export-fiddle": "bin/export-fiddle.js"
   },
   "scripts": {
     "test": "cypress run",
