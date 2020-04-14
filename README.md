@@ -71,6 +71,25 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 - `skip` creates a skipped test with `it.skip`
 - `only` creates an exclusive test with `it.only`
 
+### Styles
+
+Sometimes you want to inject external stylesheets and maybe custom style CSS into the frame (we already include Highlight.js). Pass additional CSS link urls and custom styles through environment variables in `cypress.json` config file.
+
+```json
+{
+  "env": {
+    "cypress-fiddle": {
+      "stylesheets": [
+        "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      ],
+      "style": "body { padding: 1rem; }"
+    }
+  }
+}
+```
+
+**Tip:** it is more convenient to set multiline environment variables or even load CSS files from plugins file.
+
 ### Create multiple tests
 
 Instead of writing the `cy.runExample()` command one by one, you can collect all test definitions into a list or a nested object of suites and create tests automatically.

@@ -2,7 +2,6 @@
 // @ts-check
 
 const { createMarkdown } = require('safe-marked')
-const {safeHtml} = require('common-tags')
 const markdown = createMarkdown()
 
 Cypress.Commands.add('runExample', options => {
@@ -16,6 +15,25 @@ Cypress.Commands.add('runExample', options => {
   }
 
   const fullLiveHtml = commonHtml ? commonHtml + '\n' + html : html
+
+  const fiddleOptions = Cypress._.defaults({}, Cypress.env('cypress-fiddle'), {
+    stylesheets: [],
+    style: ''
+  })
+
+  let stylesheetsHtml = ''
+  if (typeof fiddleOptions.stylesheets) {
+    fiddleOptions.stylesheets = [fiddleOptions.stylesheets]
+  }
+  if (Array.isArray(fiddleOptions.stylesheets)) {
+    stylesheetsHtml = fiddleOptions.stylesheets.map(url => `<link rel="stylesheet" href="${url}">`).join('\n')
+  }
+
+  let style
+  if (typeof fiddleOptions.style === 'string' && fiddleOptions.style) {
+    style = `<style>\n${fiddleOptions.style}\n</style>`
+  }
+
 
   // really dummy way to see if the test code contains "cy.visit(...)"
   // because in that case we should not use "cy.within" or mount html
@@ -42,9 +60,9 @@ Cypress.Commands.add('runExample', options => {
     <head>
       <meta charset="UTF-8">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/github.min.css">
+      ${stylesheetsHtml}
+      ${style}
       <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
-      <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/javascript.min.js"</script>
-      <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/html.min.js"</script>
       <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
