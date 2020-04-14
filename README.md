@@ -71,6 +71,11 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 - `skip` creates a skipped test with `it.skip`
 - `only` creates an exclusive test with `it.only`
 
+### Included scripts
+
+- [jQuery slim](https://code.jquery.com/)
+- [Highlight.js](https://highlightjs.org/)
+
 ### Styles
 
 Sometimes you want to inject external stylesheets and maybe custom style CSS into the frame (we already include Highlight.js). Pass additional CSS link urls and custom styles through environment variables in `cypress.json` config file.
