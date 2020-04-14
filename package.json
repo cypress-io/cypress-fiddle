@@ -6,8 +6,12 @@
   "main": "src",
   "types": "src/index.d.ts",
   "files": [
-    "src"
+    "src",
+    "bin"
   ],
+  "bin": {
+    "export-fiddle": "bin/export-fiddle"
+  },
   "scripts": {
     "test": "cypress run",
     "cy:open": "cypress open",
