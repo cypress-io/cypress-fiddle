@@ -147,7 +147,7 @@ const testExamples = maybeTest => {
       // console.log('%s is a test', name)
 
       if (value.skip && value.only) {
-        throw new Error(`Test ${name} has `)
+        throw new Error(`Test ${name} has both skip and only true`)
       }
 
       createTest(name, value)
