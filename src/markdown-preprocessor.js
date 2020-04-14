@@ -127,7 +127,7 @@ const mdPreprocessor = file => {
     // console.log(ast)
     const htmlCodeBlockMaybe = ast.children.find(s => isHtmlCodeBlock(s))
     const htmlLiveBlockMaybe = ast.children.find(s => isLiveHtml(s) && !isFiddleMarkup(s.value))
-    const htmlMarkup = ast.children.find(isFiddleMarkup)
+    const htmlMarkup = ast.children.find(s => isFiddleMarkup(s.value))
 
     // console.log('found html block?', htmlMaybe)
 
@@ -139,11 +139,13 @@ const mdPreprocessor = file => {
       const testCode = jsMaybe.map(b => b.value).join('\n')
 
       const htmlNode = htmlLiveBlockMaybe || htmlCodeBlockMaybe
+      const commonHtml = htmlMarkup ? extractFiddleMarkup(htmlMarkup.value) : null
 
       testFiddles.push({
         name: fiddle.name,
         test: testCode,
         html: htmlNode ? htmlNode.value : null,
+        commonHtml,
         only: fiddle.only,
         skip: fiddle.skip
       })
