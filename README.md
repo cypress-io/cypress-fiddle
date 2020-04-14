@@ -251,6 +251,19 @@ When including HTML source fragment and live HTML block, live HTML block wins an
     ```
     <!-- fiddle-end -->
 
+### Common Live HTML
+
+If you have common HTML to load before the live HTML block, but do not want to show it in the HTML snippet, put it into a comment like this
+
+    <!-- fiddle-markup
+    <link rel="stylesheet" href="some CSS URL">
+    <style>
+    body {
+      padding: 2rem;
+    }
+    </style>
+    -->
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
