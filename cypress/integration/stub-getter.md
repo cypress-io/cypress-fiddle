@@ -1,3 +1,5 @@
+# Stubs
+
 This question comes in [cypress-io/cypress/issues/5420](https://github.com/cypress-io/cypress/issues/5420).
 
 ## How to stub a getter props?

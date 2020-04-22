@@ -1,5 +1,6 @@
 // @ts-check
 const { source } = require('common-tags')
+const debug = require('debug')('@cypress/fiddle')
 
 const isTestObject = o => o.test
 
@@ -18,12 +19,12 @@ function generateTest (name, maybeTest) {
   `
 }
 
-
 /**
  * Processes a tree of test definitions, each with HTML and JS
  * and returns generated spec file source
  */
 function generateSpec (maybeTest) {
+
   if (isTestObject(maybeTest)) {
     return generateTest(maybeTest.name, maybeTest)
   }
@@ -33,10 +34,11 @@ function generateSpec (maybeTest) {
     const sources = maybeTest.map(test => {
       return generateTest(test.name, test)
     })
-    return sources.join('\n')
+    return sources.join('\n\n')
   }
 
   const sources = Object.keys(maybeTest).map((name) => {
+    debug('generating test for name "%s"', name)
     const value = maybeTest[name]
     // console.log({ name, value })
 
