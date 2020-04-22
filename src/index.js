@@ -122,7 +122,7 @@ const createTest = (name, test) => {
     )
   }
 
-  if (test.skip) {
+  if (test.skip || test.export) {
     console.log('skipping test "%s"', name)
     it.skip(name, () => {
       cy.runExample(test)

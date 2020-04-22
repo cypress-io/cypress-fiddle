@@ -7,7 +7,7 @@ const debug = require('debug')('@cypress/fiddle')
  * `<!-- fiddle my name -->` returns "my name".
  */
 const findFiddleName = commentLine => {
-  const matches = /fiddle(?:\.only|\.skip)? (.+)-->/.exec(commentLine)
+  const matches = /fiddle(?:\.only|\.skip|\.export)? (.+)-->/.exec(commentLine)
   if (matches && matches.length) {
     return matches[1].trim()
   }
@@ -15,6 +15,7 @@ const findFiddleName = commentLine => {
 
 const isFiddleOnly = (line) => line.startsWith('<!-- fiddle.only ')
 const isFiddleSkip = (line) => line.startsWith('<!-- fiddle.skip ')
+const isFiddleExport = (line) => line.startsWith('<!-- fiddle.export ')
 
 const isFiddleMarkup = (s) => s && s.startsWith('<!-- fiddle-markup')
 
@@ -27,7 +28,7 @@ const extractFiddleMarkup = (s) => {
  * Checks if the given line starts with "<!-- fiddle" or one of its variations.
  */
 const isFiddleStartLine = (line) => {
-  return line.startsWith('<!-- fiddle ') || isFiddleOnly(line) || isFiddleSkip(line)
+  return line.startsWith('<!-- fiddle ') || isFiddleOnly(line) || isFiddleSkip(line) || isFiddleExport(line)
 }
 
 function extractFiddles (md) {
@@ -74,6 +75,7 @@ function extractFiddles (md) {
       fiddle,
       only: isFiddleOnly(startLine),
       skip: isFiddleSkip(startLine),
+      export: isFiddleExport(startLine),
     })
 
     start = end + 1
@@ -119,7 +121,8 @@ function extractFiddles (md) {
         html: htmlNode ? htmlNode.value : null,
         commonHtml,
         only: fiddle.only,
-        skip: fiddle.skip
+        skip: fiddle.skip,
+        export: fiddle.export
       })
     }
   })

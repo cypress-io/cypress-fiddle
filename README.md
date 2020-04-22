@@ -237,6 +237,8 @@ You can skip a fiddle, or run only a particular fiddle similar to `it.skip` and 
 <!-- fiddle.only this is an exclusive test -->
 ```
 
+**Note:** there is also `fiddle.export` modifier. These fiddles are skipped during normal testing from Markdown, but exported and enabled in the output JavaScript specs.
+
 ### Page title
 
 If the Markdown file has page title line like `# <some text>`, it will be used to create the top level suite of tests
