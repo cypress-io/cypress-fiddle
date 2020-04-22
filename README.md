@@ -334,6 +334,17 @@ And in `cypress.json` file allow Markdown files
 
 Warning: [issue #5401](https://github.com/cypress-io/cypress/issues/5401)
 
+## Exporting JS specs from Markdown fiddles
+
+```shell
+# saves path/to/md.js file
+npx export-fiddle <path/to/md>
+# adds optional "beforeEach" hook with cy.visit(url)
+npx export-fiddle <path/to/md> --before-each <url>
+# adds optional "before" hook with cy.visit(url)
+npx export-fiddle <path/to/md> --before <url>
+```
+
 ## Debug
 
 To see debug logs, use `DEBUG=@cypress/fiddle` when running Cypress.

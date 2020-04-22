@@ -23,10 +23,24 @@ function generateTest (name, maybeTest) {
  * Processes a tree of test definitions, each with HTML and JS
  * and returns generated spec file source
  */
-function generateSpec (maybeTest) {
+function generateSpec (maybeTest, options = {}) {
+  let start = ''
+  if (options.before) {
+    start = source`
+      before(() => {
+        cy.visit('${options.before}')
+      })
+    ` + '\n\n'
+  } else if (options.beforeEach) {
+    start = source`
+      beforeEach(() => {
+        cy.visit('${options.before}')
+      })
+    ` + '\n\n'
+  }
 
   if (isTestObject(maybeTest)) {
-    return generateTest(maybeTest.name, maybeTest)
+    return start + generateTest(maybeTest.name, maybeTest)
   }
 
   if (Array.isArray(maybeTest)) {
@@ -34,7 +48,7 @@ function generateSpec (maybeTest) {
     const sources = maybeTest.map(test => {
       return generateTest(test.name, test)
     })
-    return sources.join('\n\n')
+    return start + sources.join('\n\n')
   }
 
   const sources = Object.keys(maybeTest).map((name) => {
@@ -61,7 +75,7 @@ function generateSpec (maybeTest) {
     `
   })
 
-  return sources.join('\n')
+  return start + sources.join('\n')
 }
 
 module.exports = { generateSpec }
