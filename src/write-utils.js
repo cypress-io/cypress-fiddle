@@ -23,23 +23,27 @@ function generateTest (name, maybeTest) {
  * Processes a tree of test definitions, each with HTML and JS
  * and returns generated spec file source
  */
-function generateSpec (maybeTest, options = {}) {
+function generateSpecWorker (maybeTest, options) {
   let start = ''
-  if (options.before) {
-    start = source`
-      before(() => {
-        cy.visit('${options.before}')
-      })
-    ` + '\n\n'
-  } else if (options.beforeEach) {
-    start = source`
-      beforeEach(() => {
-        cy.visit('${options.before}')
-      })
-    ` + '\n\n'
+
+  if (options.beforeHooksAtDepth === options.depth) {
+    if (options.before ) {
+      start = source`
+        before(() => {
+          cy.visit('${options.before}')
+        })
+      ` + '\n\n'
+    } else if (options.beforeEach) {
+      start = source`
+        beforeEach(() => {
+          cy.visit('${options.before}')
+        })
+      ` + '\n\n'
+    }
   }
 
   if (isTestObject(maybeTest)) {
+    debug('single test object')
     return start + generateTest(maybeTest.name, maybeTest)
   }
 
@@ -66,8 +70,13 @@ function generateSpec (maybeTest, options = {}) {
       return generateTest(name, value)
     }
 
+    const nextCallOptions = {
+      ...options,
+      depth: options.depth + 1
+    }
+
     // final choice - create nested suite of tests
-    const inner = generateSpec(value)
+    const inner = generateSpecWorker(value, nextCallOptions)
     return source`
       describe('${name}', () => {
         ${inner}
@@ -76,6 +85,14 @@ function generateSpec (maybeTest, options = {}) {
   })
 
   return start + sources.join('\n')
+}
+
+function generateSpec(maybeTest, options = {}) {
+  const opts = {
+    ...options,
+    depth: 0
+  }
+  return generateSpecWorker(maybeTest, opts)
 }
 
 module.exports = { generateSpec }

@@ -25,6 +25,7 @@ debug('found tests %o', tests)
 const source = writeUtils.generateSpec(tests, {
   before: args['--before'],
   beforeEach: args['--before-each'],
+  beforeHooksAtDepth: 1, // only add the hooks to 1 level deep
 })
 fs.writeFileSync(outputFilename, source + '\n', 'utf8')
 console.log('saved %s', outputFilename)
