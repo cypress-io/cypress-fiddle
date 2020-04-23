@@ -29,11 +29,10 @@ Cypress.Commands.add('runExample', options => {
     stylesheetsHtml = fiddleOptions.stylesheets.map(url => `<link rel="stylesheet" href="${url}">`).join('\n')
   }
 
-  let style
+  let style = ''
   if (typeof fiddleOptions.style === 'string' && fiddleOptions.style) {
     style = `<style>\n${fiddleOptions.style}\n</style>`
   }
-
 
   // really dummy way to see if the test code contains "cy.visit(...)"
   // because in that case we should not use "cy.within" or mount html
@@ -121,6 +120,10 @@ const isTestObject = o => o.test
 
 const createTest = (name, test) => {
   name = name || test.name
+  if (!name) {
+    console.error({ name, test})
+    throw new Error('Could not determine test name from ' + name)
+  }
 
   if (test.skip && test.only) {
     throw new Error(
@@ -162,7 +165,11 @@ const testExamples = maybeTest => {
   if (Array.isArray(maybeTest)) {
     // console.log('list of tests')
     maybeTest.forEach(test => {
-      createTest(test.name, test)
+      if (isTestObject(test)) {
+        createTest(test.name, test)
+      } else {
+        testExamples(test)
+      }
     })
     return
   }

@@ -32,9 +32,11 @@ const mdPreprocessor = file => {
   const md = fs.readFileSync(filePath, 'utf8')
 
   const createTests = mdUtils.extractFiddles(md)
+  const createTestsText = JSON.stringify(createTests, null, 2)
+  console.log(createTestsText)
 
   const specSource = source`
-      const fiddles = ${JSON.stringify(createTests, null, 2)}
+      const fiddles = createTestsText;
       import { testExamples } from '${testExamplesPath}'
       testExamples(fiddles)
     `

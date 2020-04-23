@@ -83,7 +83,7 @@ function extractFiddles (md) {
       fiddle,
       only: isFiddleOnly(startLine),
       skip: isFiddleSkip(startLine),
-      export: isFiddleExport(startLine),
+      export: isFiddleExport(startLine)
     })
 
     start = end + 1
@@ -120,13 +120,15 @@ function extractFiddles (md) {
       const commonHtml = htmlMarkup ? extractFiddleMarkup(htmlMarkup.value) : null
 
       testFiddles.push({
-        name: fiddle.name,
-        test: testCode,
-        html: htmlNode ? htmlNode.value : null,
-        commonHtml,
-        only: fiddle.only,
-        skip: fiddle.skip,
-        export: fiddle.export
+        parentSuite: [{
+          name: fiddle.name,
+          test: testCode,
+          html: htmlNode ? htmlNode.value : null,
+          commonHtml,
+          only: fiddle.only,
+          skip: fiddle.skip,
+          export: fiddle.export
+        }]
       })
     }
   })
