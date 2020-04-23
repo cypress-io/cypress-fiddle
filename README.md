@@ -73,7 +73,7 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 
 ### Included scripts
 
-- [jQuery slim](https://code.jquery.com/)
+- [jQuery minified](https://code.jquery.com/)
 - [Highlight.js](https://highlightjs.org/)
 
 ### Styles
