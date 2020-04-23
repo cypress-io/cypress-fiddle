@@ -5,6 +5,11 @@ const debug = require('debug')('@cypress/fiddle')
 const isTestObject = o => o.test
 
 function generateTest (name, maybeTest) {
+  if (typeof name !== 'string') {
+    console.error(maybeTest)
+    throw new Error('Test has no name ' + name)
+  }
+
   let itName = 'it'
   if (maybeTest.skip) {
     itName = 'it.skip'
@@ -50,7 +55,15 @@ function generateSpecWorker (maybeTest, options) {
   if (Array.isArray(maybeTest)) {
     // console.log('list of tests')
     const sources = maybeTest.map(test => {
-      return generateTest(test.name, test)
+      if (isTestObject(test)) {
+        return generateTest(test.name, test)
+      } else {
+        const nextCallOptions = {
+          ...options,
+          depth: options.depth + 1
+        }
+        return generateSpecWorker(test, nextCallOptions)
+      }
     })
     return start + sources.join('\n\n')
   }
