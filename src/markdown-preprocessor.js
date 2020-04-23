@@ -33,10 +33,12 @@ const mdPreprocessor = file => {
 
   const createTests = mdUtils.extractFiddles(md)
   const createTestsText = JSON.stringify(createTests, null, 2)
-  console.log(createTestsText)
+  if (debug.enabled) {
+    console.error(createTestsText)
+  }
 
   const specSource = source`
-      const fiddles = createTestsText;
+      const fiddles = ${createTestsText};
       import { testExamples } from '${testExamplesPath}'
       testExamples(fiddles)
     `

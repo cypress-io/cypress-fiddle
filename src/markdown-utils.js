@@ -120,15 +120,13 @@ function extractFiddles (md) {
       const commonHtml = htmlMarkup ? extractFiddleMarkup(htmlMarkup.value) : null
 
       testFiddles.push({
-        parentSuite: [{
-          name: fiddle.name,
-          test: testCode,
-          html: htmlNode ? htmlNode.value : null,
-          commonHtml,
-          only: fiddle.only,
-          skip: fiddle.skip,
-          export: fiddle.export
-        }]
+        name: fiddle.name,
+        test: testCode,
+        html: htmlNode ? htmlNode.value : null,
+        commonHtml,
+        only: fiddle.only,
+        skip: fiddle.skip,
+        export: fiddle.export
       })
     }
   })
