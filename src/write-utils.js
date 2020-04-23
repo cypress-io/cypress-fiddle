@@ -92,7 +92,12 @@ function generateSpec(maybeTest, options = {}) {
     ...options,
     depth: 0
   }
-  return generateSpecWorker(maybeTest, opts)
+
+  const source = generateSpecWorker(maybeTest, opts)
+  const preamble = source`
+    /// <reference types="cypress" />
+  ` + '\n'
+  return preamble + source
 }
 
 module.exports = { generateSpec }
