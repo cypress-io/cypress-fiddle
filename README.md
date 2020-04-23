@@ -249,6 +249,24 @@ describe('<some text>', () => {
 })
 ```
 
+### Nested suites
+
+You can put a fiddle into nested suites using `/` as a separator
+
+```
+<!-- fiddle Top / nested / test -->
+```
+
+Will create
+
+```js
+describe('Top', () => {
+  describe('nested', () => {
+    it('test', () => {})
+  })
+})
+```
+
 ### Live HTML
 
 You can include "live" html blocks in the fiddle - in that case they will become the test fragment.

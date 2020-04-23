@@ -36,6 +36,23 @@ const isFiddleStartLine = (line) => {
   return line.startsWith('<!-- fiddle ') || isFiddleOnly(line) || isFiddleSkip(line) || isFiddleExport(line)
 }
 
+function formFiddleObject (options) {
+  const nameSeparator = '/'
+  const separatorAt = options.name.indexOf(nameSeparator)
+  if (separatorAt === -1) {
+    return options
+  }
+
+  const suiteName = options.name.substr(0, separatorAt).trim()
+  const restName = options.name.substr(separatorAt + 1).trim()
+  return {
+    [suiteName]: [formFiddleObject({
+      ...options,
+      name: restName
+    })]
+  }
+}
+
 function extractFiddles (md) {
   const lines = md.split('\n')
   const fiddles = []
@@ -119,7 +136,7 @@ function extractFiddles (md) {
       const htmlNode = htmlLiveBlockMaybe || htmlCodeBlockMaybe
       const commonHtml = htmlMarkup ? extractFiddleMarkup(htmlMarkup.value) : null
 
-      testFiddles.push({
+      const testFiddle = formFiddleObject({
         name: fiddle.name,
         test: testCode,
         html: htmlNode ? htmlNode.value : null,
@@ -128,6 +145,12 @@ function extractFiddles (md) {
         skip: fiddle.skip,
         export: fiddle.export
       })
+      if (debug.enabled) {
+        debug('test fiddle formed from "%s"', fiddle.name)
+        console.error(testFiddle)
+      }
+
+      testFiddles.push(testFiddle)
     }
   })
 

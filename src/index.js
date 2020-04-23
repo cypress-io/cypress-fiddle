@@ -147,7 +147,7 @@ const createTest = (name, test) => {
     return
   }
 
-  it(name, () => {
+  it(name, function () {
     cy.runExample(test)
   })
 }
