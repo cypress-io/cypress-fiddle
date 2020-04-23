@@ -7,9 +7,14 @@ const debug = require('debug')('@cypress/fiddle')
  * `<!-- fiddle my name -->` returns "my name".
  */
 const findFiddleName = commentLine => {
+  debug('finding fiddle name from line: "%s"', commentLine)
   const matches = /fiddle(?:\.only|\.skip|\.export)? (.+)-->/.exec(commentLine)
   if (matches && matches.length) {
-    return matches[1].trim()
+    const testTitle = matches[1].trim()
+    debug('test title: "%s"', testTitle)
+    return testTitle
+  } else {
+    debug('could not fiddle name from line "%s"', commentLine)
   }
 }
 
@@ -60,16 +65,19 @@ function extractFiddles (md) {
     const defaultFiddleName = `fiddle at line ${start + 1}`
     const testName = findFiddleName(startLine) || defaultFiddleName
 
-    const end = lines.indexOf('<!-- fiddle-end -->', start)
+    // allow ending fiddle with both comment lines
+    let end = lines.indexOf('<!-- fiddle-end -->', start)
     if (end === -1) {
+      end = lines.indexOf('<!-- fiddle.end -->', start)
+    }
+    if (end === -1) {
+      console.error('could not find where fiddle "%s" ends', testName)
+      console.error('did you forget "<!-- fiddle-end -->"?')
       break
     }
 
     const fiddle = lines.slice(start + 1, end).join('\n')
-    // console.log('found fiddle')
-    // console.log('----')
-    // console.log(fiddle)
-    // console.log('----')
+
     fiddles.push({
       name: testName,
       fiddle,
@@ -81,10 +89,6 @@ function extractFiddles (md) {
     start = end + 1
   } while (true)
 
-  // const fiddleRegex = /<!-- fiddle -->\n()<!-- fiddle-end -->\n/
-  // const matches = fiddleRegex.exec(md)
-  // console.log('matches')
-  // console.log(matches)
   debug('found %d fiddles', fiddles.length)
   debug(fiddles)
   // list of fiddles converted into JavaScript
