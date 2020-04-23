@@ -81,13 +81,19 @@ Cypress.Commands.add('runExample', options => {
 
     // @ts-ignore
     const document = cy.state('document')
-    document.write(appHtml)
-    document.close()
 
     // make sure when "eval" runs, the "window" in the test code
     // points at the application's iframe window object
     // @ts-ignore
     const window = cy.state('window')
+    if (!window.Cypress) {
+      // also set "window.Cypress" before loading "live" HTML
+      // so when it runs, it can check if it's inside Cypress test
+      window.Cypress = Cypress
+    }
+
+    document.write(appHtml)
+    document.close()
 
     const noLog = { log: false }
 
