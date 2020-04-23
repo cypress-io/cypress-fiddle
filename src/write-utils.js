@@ -93,11 +93,11 @@ function generateSpec(maybeTest, options = {}) {
     depth: 0
   }
 
-  const source = generateSpecWorker(maybeTest, opts)
+  const specSource = generateSpecWorker(maybeTest, opts)
   const preamble = source`
     /// <reference types="cypress" />
   ` + '\n'
-  return preamble + source
+  return preamble + specSource
 }
 
 module.exports = { generateSpec }
