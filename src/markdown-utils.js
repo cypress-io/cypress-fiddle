@@ -156,10 +156,43 @@ function extractFiddles (md) {
 
   // console.log(testFiddles)
   debug('Found fiddles: %d', testFiddles.length)
+  if (debug.enabled) {
+    console.error(testFiddles)
+  }
+
+  // merging top level fiddles, so that
+  // fiddles "parent / this" and "parent / that"
+  // end up in a single describe "parent"
+  const merged = []
+  const mergedLists = {}
+
+  testFiddles.forEach((t) => {
+    if (Object.keys(t).length !== 1) {
+      merged.push(t)
+      return
+    }
+
+    const name = Object.keys(t)[0]
+    if (!Array.isArray(t[name])) {
+      merged.push(t)
+      return
+    }
+
+    if (mergedLists[name]) {
+      mergedLists[name].push(...t[name])
+    } else {
+      mergedLists[name] = t[name]
+      merged.push(t)
+    }
+  })
+  if (debug.enabled) {
+    debug('merged fiddles')
+    console.error(merged)
+  }
 
   const createTests = pageTitle ? {
-    [pageTitle]: testFiddles
-  } : testFiddles
+    [pageTitle]: merged
+  } : merged
 
   return createTests
 }
