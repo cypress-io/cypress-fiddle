@@ -5,7 +5,7 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          executor: cypress/base:12
+          executor: cypress/base-12
           no-workspace: true
           post-steps:
             - run: npx cypress run --config-file cypress-markdown.json
