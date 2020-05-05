@@ -101,7 +101,8 @@ Cypress.Commands.add('runExample', options => {
       // because in that case we should not use "cy.within" or mount html
     }
     cy.get('#live', noLog).within(noLog, () => {
-      eval(test)
+      const insideFunction = '(function live() {;' + test + '})()'
+      eval(insideFunction)
     })
   } else {
     if (html) {
