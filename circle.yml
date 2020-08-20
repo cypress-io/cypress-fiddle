@@ -1,11 +1,15 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
+executors:
+  node12-lts:
+    docker:
+      - image: cypress/base:12
 workflows:
   build:
     jobs:
       - cypress/run:
-          executor: cypress/base-12
+          executor: node12-lts
           no-workspace: true
           post-steps:
             - run: npx cypress run --config-file cypress-markdown.json
