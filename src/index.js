@@ -4,9 +4,10 @@
 const { createMarkdown } = require('safe-marked')
 const markdown = createMarkdown()
 
-Cypress.Commands.add('runExample', options => {
+Cypress.Commands.add('runExample', (options) => {
   const { name, description, commonHtml, html, test } = options
-  const testTitle = name ||
+  const testTitle =
+    name ||
     // @ts-ignore
     cy.state('runnable').title
 
@@ -18,7 +19,7 @@ Cypress.Commands.add('runExample', options => {
 
   const fiddleOptions = Cypress._.defaults({}, Cypress.env('cypress-fiddle'), {
     stylesheets: [],
-    style: ''
+    style: '',
   })
 
   let stylesheetsHtml = ''
@@ -26,7 +27,9 @@ Cypress.Commands.add('runExample', options => {
     fiddleOptions.stylesheets = [fiddleOptions.stylesheets]
   }
   if (Array.isArray(fiddleOptions.stylesheets)) {
-    stylesheetsHtml = fiddleOptions.stylesheets.map(url => `<link rel="stylesheet" href="${url}">`).join('\n')
+    stylesheetsHtml = fiddleOptions.stylesheets
+      .map((url) => `<link rel="stylesheet" href="${url}">`)
+      .join('\n')
   }
 
   let style = ''
@@ -107,7 +110,7 @@ Cypress.Commands.add('runExample', options => {
   } else {
     if (html) {
       throw new Error(
-        'You have passed HTML block for this test, but also used cy.visit in the test, which one is it?'
+        'You have passed HTML block for this test, but also used cy.visit in the test, which one is it?',
       )
     }
     // run "full" test
@@ -117,18 +120,18 @@ Cypress.Commands.add('runExample', options => {
 
 const { forEach } = Cypress._
 
-const isTestObject = o => o.test
+const isTestObject = (o) => 'test' in o
 
 const createTest = (name, test) => {
   name = name || test.name
   if (!name) {
-    console.error({ name, test})
+    console.error({ name, test })
     throw new Error('Could not determine test name from ' + name)
   }
 
   if (test.skip && test.only) {
     throw new Error(
-      `Test "${name}" has both skip: true and only: true, which is impossible`
+      `Test "${name}" has both skip: true and only: true, which is impossible`,
     )
   }
 
@@ -157,7 +160,10 @@ const createTest = (name, test) => {
  * Processes a tree of test definitions, each with HTML and JS
  * and makes each into a live test. See examples in "integration" folder.
  */
-const testExamples = maybeTest => {
+const testExamples = (maybeTest) => {
+  // for debugging
+  // console.log('testExamples', { maybeTest })
+
   if (isTestObject(maybeTest)) {
     createTest(maybeTest.name, maybeTest)
     return
@@ -165,7 +171,7 @@ const testExamples = maybeTest => {
 
   if (Array.isArray(maybeTest)) {
     // console.log('list of tests')
-    maybeTest.forEach(test => {
+    maybeTest.forEach((test) => {
       if (isTestObject(test)) {
         createTest(test.name, test)
       } else {
@@ -191,6 +197,12 @@ const testExamples = maybeTest => {
 
     // final choice - create nested suite of tests
     // console.log('creating new suite "%s"', name)
+    if (typeof name !== 'string') {
+      console.error('Invalid test name (typeof %s): "%s"', typeof name, name)
+      console.error({ maybeTest, value, name })
+      throw new Error(`Invalid test name ${name}`)
+    }
+
     describe(name, () => {
       testExamples(value)
     })
