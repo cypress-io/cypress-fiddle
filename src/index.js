@@ -120,7 +120,7 @@ Cypress.Commands.add('runExample', (options) => {
 
 const { forEach } = Cypress._
 
-const isTestObject = (o) => o.test
+const isTestObject = (o) => 'test' in o
 
 const createTest = (name, test) => {
   name = name || test.name
@@ -161,6 +161,9 @@ const createTest = (name, test) => {
  * and makes each into a live test. See examples in "integration" folder.
  */
 const testExamples = (maybeTest) => {
+  // for debugging
+  // console.log('testExamples', { maybeTest })
+
   if (isTestObject(maybeTest)) {
     createTest(maybeTest.name, maybeTest)
     return
