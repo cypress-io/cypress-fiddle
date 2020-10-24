@@ -1,4 +1,6 @@
 {
   "testFiles": "*.md",
+  "experimentalComponentTesting": true,
+  "integrationFolder": "cypress/empty",
   "$schema": "https://on.cypress.io/cypress.schema.json"
 }
