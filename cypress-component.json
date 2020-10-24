@@ -1,6 +1,10 @@
 {
-  "testFiles": "*.md",
+  "testFiles": "*.{md,js}",
   "experimentalComponentTesting": true,
   "integrationFolder": "cypress/empty",
-  "$schema": "https://on.cypress.io/cypress.schema.json"
+  "supportFile": "cypress/support/components.js",
+  "$schema": "https://on.cypress.io/cypress.schema.json",
+  "env": {
+    "coverage": false
+  }
 }

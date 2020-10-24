@@ -67,4 +67,4 @@ const mdPreprocessor = (file) => {
   })
 }
 
-module.exports = { mdPreprocessor }
+module.exports = { mdPreprocessor, mdFileToJsFile }
