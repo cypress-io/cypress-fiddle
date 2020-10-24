@@ -12,5 +12,5 @@ workflows:
           executor: node12-lts
           no-workspace: true
           post-steps:
-            - run: npx cypress run --config-file cypress-markdown.json
+            - run: npx cypress-expect run --config-file cypress-markdown.json --min-passing 26
             - run: npm run semantic-release
