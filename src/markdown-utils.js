@@ -6,7 +6,7 @@ const debug = require('debug')('@cypress/fiddle')
  * Finds optional fiddle name from the comment line
  * `<!-- fiddle my name -->` returns "my name".
  */
-const findFiddleName = commentLine => {
+const findFiddleName = (commentLine) => {
   debug('finding fiddle name from line: "%s"', commentLine)
   const matches = /fiddle(?:\.only|\.skip|\.export)? (.+)-->/.exec(commentLine)
   if (matches && matches.length) {
@@ -33,10 +33,15 @@ const extractFiddleMarkup = (s) => {
  * Checks if the given line starts with "<!-- fiddle" or one of its variations.
  */
 const isFiddleStartLine = (line) => {
-  return line.startsWith('<!-- fiddle ') || isFiddleOnly(line) || isFiddleSkip(line) || isFiddleExport(line)
+  return (
+    line.startsWith('<!-- fiddle ') ||
+    isFiddleOnly(line) ||
+    isFiddleSkip(line) ||
+    isFiddleExport(line)
+  )
 }
 
-function formFiddleObject (options) {
+function formFiddleObject(options) {
   const nameSeparator = '/'
   const separatorAt = options.name.indexOf(nameSeparator)
   if (separatorAt === -1) {
@@ -46,19 +51,21 @@ function formFiddleObject (options) {
   const suiteName = options.name.substr(0, separatorAt).trim()
   const restName = options.name.substr(separatorAt + 1).trim()
   return {
-    [suiteName]: [formFiddleObject({
-      ...options,
-      name: restName
-    })]
+    [suiteName]: [
+      formFiddleObject({
+        ...options,
+        name: restName,
+      }),
+    ],
   }
 }
 
-function extractFiddles (md) {
+function extractFiddles(md) {
   const lines = md.split('\n')
   const fiddles = []
 
   let pageTitle
-  const titleLine = lines.find(line => line.startsWith('# '))
+  const titleLine = lines.find((line) => line.startsWith('# '))
   if (titleLine) {
     const matches = /^# (.+)$/.exec(titleLine)
     if (matches && matches.length) {
@@ -71,9 +78,7 @@ function extractFiddles (md) {
   let startLine
   do {
     debug('start with %d', start)
-    start = lines.findIndex(
-      (line, k) => k >= start && isFiddleStartLine(line)
-    )
+    start = lines.findIndex((line, k) => k >= start && isFiddleStartLine(line))
     if (start === -1) {
       break
     }
@@ -100,7 +105,7 @@ function extractFiddles (md) {
       fiddle,
       only: isFiddleOnly(startLine),
       skip: isFiddleSkip(startLine),
-      export: isFiddleExport(startLine)
+      export: isFiddleExport(startLine),
     })
 
     start = end + 1
@@ -111,18 +116,20 @@ function extractFiddles (md) {
   // list of fiddles converted into JavaScript
   const testFiddles = []
 
-  const isHtmlCodeBlock = n => n.type === 'CodeBlock' && n.lang === 'html'
-  const isLiveHtml = n => n.type === 'Html'
-  const isJavaScript = n =>
+  const isHtmlCodeBlock = (n) => n.type === 'CodeBlock' && n.lang === 'html'
+  const isLiveHtml = (n) => n.type === 'Html'
+  const isJavaScript = (n) =>
     n.type === 'CodeBlock' && (n.lang === 'js' || n.lang === 'javascript')
 
-  fiddles.forEach(fiddle => {
+  fiddles.forEach((fiddle) => {
     const ast = parse(fiddle.fiddle)
     // console.log('markdown fiddle AST')
     // console.log(ast)
-    const htmlCodeBlockMaybe = ast.children.find(s => isHtmlCodeBlock(s))
-    const htmlLiveBlockMaybe = ast.children.find(s => isLiveHtml(s) && !isFiddleMarkup(s.value))
-    const htmlMarkup = ast.children.find(s => isFiddleMarkup(s.value))
+    const htmlCodeBlockMaybe = ast.children.find((s) => isHtmlCodeBlock(s))
+    const htmlLiveBlockMaybe = ast.children.find(
+      (s) => isLiveHtml(s) && !isFiddleMarkup(s.value),
+    )
+    const htmlMarkup = ast.children.find((s) => isFiddleMarkup(s.value))
 
     // console.log('found html block?', htmlMaybe)
 
@@ -131,10 +138,12 @@ function extractFiddles (md) {
     const jsMaybe = ast.children.filter(isJavaScript)
 
     if (jsMaybe.length) {
-      const testCode = jsMaybe.map(b => b.value).join('\n')
+      const testCode = jsMaybe.map((b) => b.value).join('\n')
 
       const htmlNode = htmlLiveBlockMaybe || htmlCodeBlockMaybe
-      const commonHtml = htmlMarkup ? extractFiddleMarkup(htmlMarkup.value) : null
+      const commonHtml = htmlMarkup
+        ? extractFiddleMarkup(htmlMarkup.value)
+        : null
 
       const testFiddle = formFiddleObject({
         name: fiddle.name,
@@ -143,7 +152,7 @@ function extractFiddles (md) {
         commonHtml,
         only: fiddle.only,
         skip: fiddle.skip,
-        export: fiddle.export
+        export: fiddle.export,
       })
       if (debug.enabled) {
         debug('test fiddle formed from "%s"', fiddle.name)
@@ -190,13 +199,15 @@ function extractFiddles (md) {
     console.error(merged)
   }
 
-  const createTests = pageTitle ? {
-    [pageTitle]: merged
-  } : merged
+  const createTests = pageTitle
+    ? {
+        [pageTitle]: merged,
+      }
+    : merged
 
   return createTests
 }
 
 module.exports = {
-  extractFiddles
+  extractFiddles,
 }

@@ -322,6 +322,8 @@ If you have common HTML to load before the live HTML block, but do not want to s
     </style>
     -->
 
+You can load styles and external CDN scripts using this approach.
+
 ### Hiding fiddle in Markdown
 
 You can "hide" fiddle inside Markdown so the page _can test itself_. See [cypress/integration/hidden-fiddle.md](cypress/integration/hidden-fiddle.md) example.
