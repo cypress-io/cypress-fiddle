@@ -20,15 +20,28 @@ Cypress.Commands.add('runExample', (options) => {
   const fiddleOptions = Cypress._.defaults({}, Cypress.env('cypress-fiddle'), {
     stylesheets: [],
     style: '',
+    scripts: [],
   })
 
+  // take a single stylesheet URL or a list
   let stylesheetsHtml = ''
-  if (typeof fiddleOptions.stylesheets) {
+  if (typeof fiddleOptions.stylesheets === 'string') {
     fiddleOptions.stylesheets = [fiddleOptions.stylesheets]
   }
   if (Array.isArray(fiddleOptions.stylesheets)) {
     stylesheetsHtml = fiddleOptions.stylesheets
       .map((url) => `<link rel="stylesheet" href="${url}">`)
+      .join('\n')
+  }
+
+  // take a single script URL or a list
+  let scriptsHtml = ''
+  if (typeof fiddleOptions.scripts === 'string') {
+    fiddleOptions.scripts = [fiddleOptions.scripts]
+  }
+  if (Array.isArray(fiddleOptions.scripts)) {
+    scriptsHtml = fiddleOptions.scripts
+      .map((url) => `<script src="${url}"></script>`)
       .join('\n')
   }
 
@@ -69,6 +82,7 @@ Cypress.Commands.add('runExample', (options) => {
         crossorigin="anonymous"></script>
       <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
       <script>hljs.initHighlightingOnLoad();</script>
+      ${scriptsHtml}
     </head>
     <body>
       ${testTitle ? `<h1>${testTitle}</h1>` : ''}
