@@ -76,6 +76,20 @@ The next properties are NOT used by `cy.runExample` but are used by the `testExa
 - [jQuery minified](https://code.jquery.com/)
 - [Highlight.js](https://highlightjs.org/)
 
+You can include your own additional scripts by using environment variable block in `cypress.json` file
+
+```json
+{
+  "env": {
+    "cypress-fiddle": {
+      "scripts": [
+        "https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      ]
+    }
+  }
+}
+```
+
 ### Styles
 
 Sometimes you want to inject external stylesheets and maybe custom style CSS into the frame (we already include Highlight.js). Pass additional CSS link urls and custom styles through environment variables in `cypress.json` config file.
@@ -307,6 +321,8 @@ If you have common HTML to load before the live HTML block, but do not want to s
     }
     </style>
     -->
+
+You can load styles and external CDN scripts using this approach.
 
 ### Hiding fiddle in Markdown
 
