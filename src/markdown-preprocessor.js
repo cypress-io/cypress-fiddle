@@ -9,26 +9,8 @@ const mdUtils = require('./markdown-utils')
 
 const testExamplesPath = path.join(__dirname, '.')
 
-/**
-  Parses Markdown file looking for special fiddle comments. If found,
-  creates separate tests from them. If processing ".js" or ".coffee" files just
-  calls Cypress Browserify preprocessor.
-
-  ```
-  const mdPreprocessor = require('@cypress/fiddle/src/markdown-preprocessor')
-  module.exports = (on, config) => {
-    on('file:preprocessor', mdPreprocessor)
-  }
-  ```
-*/
-const mdPreprocessor = file => {
-  const { filePath, outputPath, shouldWatch } = file
-
-  if (filePath.endsWith('.js') || filePath.endsWith('.coffee')) {
-    return cyBrowserify(file)
-  }
-
-  debug({ filePath, outputPath, shouldWatch })
+const mdFileToJsFile = ({ filePath }) => {
+  debug('md to js file from %s', filePath)
   const md = fs.readFileSync(filePath, 'utf8')
 
   const createTests = mdUtils.extractFiddles(md)
@@ -45,8 +27,35 @@ const mdPreprocessor = file => {
   // console.log(specSource)
   const writtenTempFilename = tempWrite.sync(
     specSource,
-    path.basename(filePath) + '.js'
+    path.basename(filePath) + '.js',
   )
+  debug('wrote temp file', writtenTempFilename)
+  return writtenTempFilename
+}
+
+/**
+  Parses Markdown file looking for special fiddle comments. If found,
+  creates separate tests from them. If processing ".js" or ".coffee" files just
+  calls Cypress Browserify preprocessor.
+
+  ```
+  const mdPreprocessor = require('@cypress/fiddle/src/markdown-preprocessor')
+  module.exports = (on, config) => {
+    on('file:preprocessor', mdPreprocessor)
+  }
+  ```
+*/
+const mdPreprocessor = (file) => {
+  const { filePath, outputPath, shouldWatch } = file
+
+  if (filePath.endsWith('.js') || filePath.endsWith('.coffee')) {
+    return cyBrowserify(file)
+  }
+
+  debug({ filePath, outputPath, shouldWatch })
+
+  // console.log(specSource)
+  const writtenTempFilename = mdFileToJsFile({ filePath })
   debug('wrote temp file', writtenTempFilename)
 
   return cyBrowserify({
@@ -54,8 +63,8 @@ const mdPreprocessor = file => {
     outputPath,
     // since the file is generated once, no need to watch it
     shouldWatch: false,
-    on: file.on
+    on: file.on,
   })
 }
 
-module.exports = mdPreprocessor
+module.exports = { mdPreprocessor, mdFileToJsFile }
