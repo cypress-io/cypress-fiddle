@@ -30,7 +30,7 @@
     "cypress-expect": "2.1.2",
     "cypress-pipe": "1.7.0",
     "prettier": "2.1.2",
-    "semantic-release": "17.2.3"
+    "semantic-release": "17.2.4"
   },
   "dependencies": {
     "@cypress/browserify-preprocessor": "2.2.4",
