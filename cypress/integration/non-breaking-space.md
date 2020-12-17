@@ -61,3 +61,25 @@ cy.get('[data-testid=testattr]')
 ## Result
 
 ![Non-breaking space tests](../../images/non-breaking-space.png)
+
+## Filter
+
+Just checking how `.filter(:contains)` works
+
+<!-- fiddle .filter :contains -->
+```html
+<ul>
+  <li>Home</li>
+  <li>Services</li>
+  <li>Advanced Services</li>
+  <li>Pricing</li>
+  <li>Contact</li>
+</ul>
+```
+
+```js
+cy.get('li')
+  .filter(':contains("Services")')
+  .should('have.length', 2)
+```
+<!-- fiddle-end -->
