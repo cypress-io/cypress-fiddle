@@ -58,6 +58,20 @@ cy.get('[data-testid=testattr]')
 ```
 <!-- fiddle-end -->
 
+<!-- fiddle With whitespace / use Unicode in .should have.text -->
+```html
+<div data-testid="testattr">
+  <div><span>GBP&nbsp;0.50</span></div>
+</div>
+```
+
+```js
+cy.get('[data-testid=testattr]')
+  .find('span')
+  .should('have.text', 'GBP\u00a00.50')
+```
+<!-- fiddle-end -->
+
 ## Result
 
 ![Non-breaking space tests](../../images/non-breaking-space.png)
