@@ -27,7 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "cypress": "6.3.0",
-    "cypress-expect": "2.1.2",
+    "cypress-expect": "2.2.1",
     "cypress-pipe": "1.7.0",
     "prettier": "2.1.2",
     "semantic-release": "17.2.4"
