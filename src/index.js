@@ -111,7 +111,9 @@ Cypress.Commands.add('runExample', (options) => {
     document.write(appHtml)
     document.close()
 
-    const noLog = { log: false }
+    // compiling the Markdown to get the playground
+    // often takes a few extra seconds on the first pass
+    const noLog = { log: false, timeout: 10000 }
 
     if (test.includes('cy.visit(')) {
       // really dummy way to see if the test code contains "cy.visit(...)"
