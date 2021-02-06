@@ -29,7 +29,7 @@
     "cypress": "6.4.0",
     "cypress-expect": "2.2.1",
     "cypress-pipe": "1.7.0",
-    "prettier": "2.1.2",
+    "prettier": "2.2.1",
     "semantic-release": "17.2.4"
   },
   "dependencies": {
