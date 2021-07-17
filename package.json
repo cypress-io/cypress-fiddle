@@ -33,7 +33,7 @@
     "semantic-release": "17.4.4"
   },
   "dependencies": {
-    "@cypress/browserify-preprocessor": "2.2.4",
+    "@cypress/browserify-preprocessor": "3.0.1",
     "@textlint/markdown-to-ast": "12.0.0",
     "arg": "4.1.3",
     "common-tags": "1.8.0",
