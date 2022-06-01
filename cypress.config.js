@@ -1,5 +1,5 @@
 const { defineConfig } = require('cypress')
-const mdPreprocessor = require('../../src/markdown-preprocessor')
+const mdPreprocessor = require('./src/markdown-preprocessor')
 
 module.exports = defineConfig({
   e2e: {
