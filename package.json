@@ -16,7 +16,7 @@
     "test": "cypress run",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "cy:md": "cypress open --config-file cypress-markdown.json",
+    "cy:md": "cypress open --config-file cypress-markdown.config.js",
     "semantic-release": "semantic-release"
   },
   "keywords": [
@@ -26,7 +26,7 @@
   "author": "Gleb Bahmutov <gleb@cypress.io>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "9.6.1",
+    "cypress": "10.0.0",
     "cypress-expect": "2.2.1",
     "cypress-pipe": "1.7.0",
     "prettier": "2.2.1",
