@@ -28,7 +28,7 @@
   "devDependencies": {
     "cypress": "10.0.0",
     "cypress-expect": "2.5.2",
-    "cypress-pipe": "1.7.0",
+    "cypress-pipe": "2.0.0",
     "prettier": "2.2.1",
     "semantic-release": "17.4.4"
   },
