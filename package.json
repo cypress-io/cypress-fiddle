@@ -26,7 +26,7 @@
   "author": "Gleb Bahmutov <gleb@cypress.io>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "10.3.1",
+    "cypress": "10.4.0",
     "cypress-expect": "2.5.2",
     "cypress-pipe": "1.7.0",
     "prettier": "2.2.1",
