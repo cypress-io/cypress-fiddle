@@ -87,7 +87,8 @@ context('Cypress example', () => {
 
       it('finds row using cy.contains', () => {
         const test = source`
-          cy.get('table tr')
+          cy.get('table tr').as('table')
+          cy.get('@table')
             .should('have.length', 3)
             .contains('td', 'B2')
             .parent('tr')
