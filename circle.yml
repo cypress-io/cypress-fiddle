@@ -4,7 +4,7 @@ orbs:
 executors:
   node18-lts:
     docker:
-      - image: cypress/base:18
+      - image: cypress/base:18.12.1
 workflows:
   build:
     jobs:
