@@ -2,14 +2,14 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 executors:
-  node12-lts:
+  node18-lts:
     docker:
-      - image: cypress/base:12
+      - image: cypress/base:18.12.1
 workflows:
   build:
     jobs:
       - cypress/run:
-          executor: node12-lts
+          executor: node18-lts
           no-workspace: true
           post-steps:
             - run: npx cypress-expect run --config-file cypress-markdown.config.js --min-passing 26
