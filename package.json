@@ -39,7 +39,7 @@
     "common-tags": "1.8.2",
     "debug": "4.3.4",
     "safe-marked": "11.0.0",
-    "temp-write": "4.0.0"
+    "temp-write": "5.0.0"
   },
   "repository": {
     "type": "git",
